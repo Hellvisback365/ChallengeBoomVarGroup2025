@@ -29,12 +29,27 @@ function formatReportText(text) {
     .replace(/\*(.+?)\*/g, '<em style="font-style: italic;">$1</em>')
     // Liste puntate (- item o * item)
     .replace(/^[*-] (.+)$/gm, '<li style="margin-left: 1.5em; margin-bottom: 0.3em;">$1</li>')
-    // Liste numerate (1. item)
-    .replace(/^\d+\. (.+)$/gm, '<li style="margin-left: 1.5em; margin-bottom: 0.3em; list-style-type: decimal;">$1</li>')
     // Paragrafi (righe vuote)
     .replace(/\n\n/g, '<br/><br/>');
   
   return formatted;
+}
+
+// Converte il testo in una struttura Markdown coerente con le regole definite
+// - Rimuove eventuali tag HTML
+// - Converte elenchi numerati (1. 2. ...) in elenchi puntati (- )
+// - Normalizza le nuove righe
+function toMarkdownStructure(text) {
+  if (!text) return text;
+  let md = text
+    // rimuovi HTML eventualmente presente
+    .replace(/<\/?[^>]+(>|$)/g, '')
+    // converti elenchi numerati in elenchi puntati
+    .replace(/^\s*\d+\.\s+/gm, '- ')
+    // normalizza CRLF -> LF
+    .replace(/\r\n/g, '\n');
+
+  return md.trim();
 }
 
 export default function AssistenteVarGroup() {
@@ -130,22 +145,29 @@ export default function AssistenteVarGroup() {
     setReportLoading(true);
     try {
       const ultimoMessaggio = chat.slice(-1)[0]?.testo || "";
+      const ultimoMessaggioMarkdown = toMarkdownStructure(ultimoMessaggio);
       const storicoChat = chat.map(x => x.testo).join("\n");
       
       // Data corrente in formato gg.mm.aaaa
       const now = new Date();
       const data = `${String(now.getDate()).padStart(2, '0')}.${String(now.getMonth() + 1).padStart(2, '0')}.${now.getFullYear()}`;
       
+      // Prepara multipart/form-data con file binario contenente il markdown
+      const formData = new FormData();
+      formData.append('ultimoMessaggio', ultimoMessaggio);
+      formData.append('ultimoMessaggioMarkdown', ultimoMessaggioMarkdown);
+      formData.append('storico', storicoChat);
+      formData.append('consultantName', consultantName.toUpperCase());
+  formData.append('companyName', companyName.toUpperCase());
+      formData.append('data', data);
+      // Allegato binario: markdown dell'ultimo messaggio
+      const safeDateForFilename = data.replace(/\./g, '-');
+      const mdBlob = new Blob([ultimoMessaggioMarkdown || ''], { type: 'text/markdown' });
+      formData.append('file', mdBlob, `ultimo_messaggio_${safeDateForFilename}.md`);
+
       const res = await fetch(REPORT_URL, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ultimoMessaggio,
-          storico: storicoChat,
-          consultantName: consultantName.toUpperCase(), // Nome in uppercase
-          companyName,
-          data, // Data corrente
-        }),
+        body: formData, // Non impostare manualmente Content-Type: il browser aggiunge boundary
       });
       const risposta = await res.text();
       setReportUrl(risposta); // Salva l'URL ricevuto
