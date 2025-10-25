@@ -33,15 +33,17 @@ export default function FaseTrascrizione() {
   const [uploadLoading, setUploadLoading] = useState(false);
   const [uploadStatus, setUploadStatus] = useState("");
 
-  // Converte l'intera trascrizione in markdown semplice (bullet list per ogni riga)
+  // Converte l'intera trascrizione in markdown
+  // - Se NON contiene elementi di formattazione markdown, restituisce un unico elemento "body: ..."
+  // - Se contiene già markdown, restituisce il testo così com'è
   function toMarkdownTranscript(testo) {
     if (!testo) return " Nessuna trascrizione disponibile. ";
-    return testo
-      .split("\n")
-      .map((r) => r.trim())
-      .filter(Boolean)
-      .map((r) => `- ${r}`)
-      .join("\n");
+    const raw = testo.trim();
+    const hasMarkdown = /(^#\s|^##\s|^###\s|\*\*.+?\*\*|\*.+?\*|^\s*[-*]\s|^\s*\d+\.\s)/m.test(raw);
+    if (!hasMarkdown) {
+      return `body: ${raw}`;
+    }
+    return raw;
   }
 
   async function handleUploadTranscript() {
@@ -62,11 +64,20 @@ export default function FaseTrascrizione() {
       formData.append('data', data);
       formData.append('isNew', 0);
 
-      await fetch(REPORT_URL, {
+      const res = await fetch(REPORT_URL, {
         method: 'POST',
         body: formData,
       });
-      setUploadStatus("Trascrizione inviata con successo.");
+      const text = (await res.text()).trim();
+      if (text === "La consulenza non esiste, hai effettuato una trascrizione di una consulenza ancora non documentata?") {
+        setUploadStatus(text);
+      } else if (text === "Trascrizione inserita!") {
+        setUploadStatus(
+          "Trascrizione inserita! Trovi la tua trascrizione in https://drive.google.com/drive/folders/1qF7B1O1XoqNQ-069_ZY6GZAoOunOmA9Z?usp=drive_link, nella cartella apposita!"
+        );
+      } else {
+        setUploadStatus(text || "Trascrizione inviata.");
+      }
     } catch (err) {
       setUploadStatus("Errore durante l'invio della trascrizione.");
     }
@@ -75,6 +86,29 @@ export default function FaseTrascrizione() {
     setNomeConsulente("");
     setNomeAzienda("");
     setTimeout(() => setUploadStatus(""), 8000);
+  }
+
+  // Rende cliccabili eventuali URL nel messaggio di stato
+  function linkifyStatus(text) {
+    if (!text) return null;
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    const parts = text.split(urlRegex);
+    return parts.map((part, idx) => {
+      if (urlRegex.test(part)) {
+        return (
+          <a
+            key={`link-${idx}`}
+            href={part}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: '#23d7fc', textDecoration: 'underline', cursor: 'pointer' }}
+          >
+            {part}
+          </a>
+        );
+      }
+      return <span key={`text-${idx}`}>{part}</span>;
+    });
   }
 
   // Questo useEffect viene eseguito UNA SOLA VOLTA al montaggio
@@ -249,7 +283,7 @@ export default function FaseTrascrizione() {
       {uploadStatus && (
         <div className="main-cards-mobile">
           <div className="glass-effect card-chat" style={{ maxWidth: 500, margin: "1em auto", padding: "0.8em 1.2em", color: uploadStatus.includes('successo') ? '#2ec883' : '#ff4d4f' }}>
-            {uploadStatus}
+            {linkifyStatus(uploadStatus)}
           </div>
         </div>
       )}

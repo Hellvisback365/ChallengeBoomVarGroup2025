@@ -259,7 +259,7 @@ export default function AssistenteVarGroup() {
               {reportStatus}
               {reportStatus.includes("successo") && (
                 <a 
-                  href="https://drive.google.com/drive/folders/1f-f4SpflPnPP6LHd0Z4a82Z0Tu9lyTr6?usp=drive_link" 
+                  href="https://drive.google.com/drive/u/0/folders/1qF7B1O1XoqNQ-069_ZY6GZAoOunOmA9Z" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   style={{ 
