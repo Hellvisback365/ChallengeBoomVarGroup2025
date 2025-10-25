@@ -82,6 +82,8 @@ function Report() {
         <li><b>Output:</b> Report PDF/Word pronto per invio</li>
         <li><b>Storage:</b> Salvataggio automatico su Google Drive e invio Email</li>
       </ul>
+      {/* Widget spostato dalla Fase 2 */}
+      <RispostaWebhook />
       {/* Qui puoi aggiungere generazione file, form invio email, ecc */}
     </div>
   );
