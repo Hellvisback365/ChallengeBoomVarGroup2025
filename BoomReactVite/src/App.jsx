@@ -1,7 +1,7 @@
 import { Routes, Route, useNavigate } from "react-router-dom";
 import FaseTrascrizione from "./FaseTrascrizione.jsx";
 import "./index.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import RispostaWebhook from "./RispostaWebhook.jsx";
 import AssistenteVarGroup from "./AssistenteVarGroup.jsx";
 
@@ -88,6 +88,15 @@ function Report() {
 }
 
 export default function App() {
+
+// Questo useEffect viene eseguito UNA SOLA volta quando l'app si carica
+  useEffect(() => {
+    // Pulisce il localStorage all'avvio dell'app
+    console.log("App caricata, pulizia sessione precedente.");
+    localStorage.removeItem("conversazione");
+    localStorage.removeItem("chatVarGroup");
+  }, []); // L'array vuoto [] assicura che venga eseguito solo una volta
+
   return (
     <Routes>
       <Route path="/" element={<Home />} />

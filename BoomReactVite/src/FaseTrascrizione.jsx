@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import RispostaWebhook from "./RispostaWebhook.jsx";
 import AssistenteVarGroup from "./AssistenteVarGroup.jsx";
 
-
 const N8N_URL = "https://valeriolorito.app.n8n.cloud/webhook/trascrizione";
 
 export default function FaseTrascrizione() {
@@ -10,16 +9,14 @@ export default function FaseTrascrizione() {
   const [chat, setChat] = useState(() => localStorage.getItem("conversazione") || "");
   const [suggestions, setSuggestions] = useState([]);
   const [msg, setMsg] = useState("Premi il microfono e parla. Ti consiglierò live!");
+  
   const recogRef = useRef(null);
   const aiRef = useRef();
-
-  function addMessageToChat(text) {
-    setChat((prev) => {
-      const newChat = prev + "\n" + text;
-      localStorage.setItem("conversazione", newChat);
-      return newChat;
-    });
-  }
+  
+  // Ref per tenere traccia dello stato *desiderato* (intent)
+  // Questo risolve il problema dello "stale state" in onend
+  const micOnRef = useRef(micOn);
+  micOnRef.current = micOn;
 
   function updateAISuggestions(suggArr) {
     if (!Array.isArray(suggArr)) suggArr = [suggArr];
@@ -30,66 +27,129 @@ export default function FaseTrascrizione() {
   }
 
   function downloadChat() {
-  const element = document.createElement("a");
-  const file = new Blob([chat], {type: 'text/plain'});
-  element.href = URL.createObjectURL(file);
-  element.download = "trascrizione_chat.txt";
-  document.body.appendChild(element);
-  element.click();
-  document.body.removeChild(element);
-}
+    const element = document.createElement("a");
+    const file = new Blob([chat], { type: 'text/plain' });
+    element.href = URL.createObjectURL(file);
+    element.download = "trascrizione_chat.txt";
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+  }
 
-
+  // Questo useEffect viene eseguito UNA SOLA VOLTA al montaggio
   useEffect(() => {
+    console.log("useEffect [Setup] eseguito.");
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
+      console.error("API Web Speech non supportata.");
       setMsg("API Web Speech non supportata su questo browser.");
       return;
     }
+    console.log("SpeechRecognition API supportata.");
+
     const recog = new SpeechRecognition();
     recog.lang = "it-IT";
-    recog.continuous = true;
+    recog.continuous = true; // Prova a mantenerla continua
     recog.interimResults = false;
-    recogRef.current = recog;
-    recog.onend = () => micOn && recog.start();
-    recog.onresult = (e) => {
-      for (let i = e.resultIndex; i < e.results.length; ++i) {
-        const tr = e.results[i][0].transcript;
-        addMessageToChat(tr);
-        fetch(N8N_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ frase: tr, storico: chat + "\n" + tr }),
-        })
-          .then((resp) => resp.text())
-          .then((data) => {
-            let suggArr;
-            try {
-              suggArr = JSON.parse(data);
-            } catch (err) {
-              suggArr = [data];
-            }
-            updateAISuggestions(suggArr);
-          })
-          .catch((err) => console.error("Errore fetch:", err));
+    recogRef.current = recog; // Salva l'istanza persistente
+
+    recog.onstart = () => {
+      console.log("Evento: onstart - Riconoscimento avviato.");
+      setMsg("🎤 Microfono attivo, parla ora...");
+    };
+
+    recog.onend = () => {
+      console.log("Evento: onend - Riconoscimento terminato.");
+      // Controlla lo stato *desiderato* (micOnRef.current)
+      if (micOnRef.current) {
+        console.log("onend: Stato desiderato è 'on', tento riavvio...");
+        try {
+          recog.start(); // Riavvia se l'utente voleva il microfono acceso
+        } catch (err) {
+          console.error("Errore DENTRO onend durante recog.start():", err);
+          setMicOn(false); // Se il riavvio fallisce, aggiorna lo stato
+          setMsg("Errore riavvio microfono. Riprova.");
+        }
+      } else {
+        // L'utente ha premuto stop, quindi è tutto normale
+        console.log("onend: Stato desiderato è 'off'.");
+        setMsg("Microfono disattivato.");
+        setMicOn(false); // Sincronizza lo stato se non lo è già
       }
     };
-    return () => { recog.stop(); };
-  }, [micOn, chat]);
+
+    recog.onerror = (event) => {
+      console.error("Evento: onerror - Errore riconoscimento:", event.error, event.message);
+      setMsg(`Errore microfono: ${event.error}`);
+      setMicOn(false); // Errore, forza lo stato a 'off'
+    };
+
+    recog.onresult = (e) => {
+      console.log("Evento: onresult - Ricevuto risultato.");
+      for (let i = e.resultIndex; i < e.results.length; ++i) {
+        const tr = e.results[i][0].transcript;
+        
+        // Usa l'aggiornamento funzionale per evitare lo "stale state"
+        setChat((prevChat) => {
+          const newChat = prevChat + "\n" + tr;
+          localStorage.setItem("conversazione", newChat);
+
+          // Esegui il fetch QUI DENTRO, usando 'newChat'
+          fetch(N8N_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            // Usa newChat per avere lo storico aggiornato
+            body: JSON.stringify({ frase: tr, storico: newChat }),
+          })
+            .then((resp) => resp.text())
+            .then((data) => {
+              let suggArr;
+              try {
+                suggArr = JSON.parse(data);
+              } catch (err) {
+                suggArr = [data];
+              }
+              updateAISuggestions(suggArr);
+            })
+            .catch((err) => console.error("Errore fetch:", err));
+          
+          return newChat; // Ritorna il nuovo stato
+        });
+      }
+    };
+
+    // Cleanup: Chiamato solo quando il componente viene smontato
+    return () => {
+      console.log("Cleanup useEffect [Unmount]: Chiamo recog.stop().");
+      if (recogRef.current) {
+        recogRef.current.onend = null;
+        recogRef.current.onerror = null;
+        recogRef.current.onstart = null;
+        recogRef.current.onresult = null;
+        recogRef.current.stop();
+      }
+    };
+  }, []); // <-- Array dipendenze VUOTO. Esegui solo una volta.
 
   const startMic = () => {
-    if (!micOn && recogRef.current) {
-      setMicOn(true);
-      recogRef.current.start();
-      setMsg("🎤 Microfono attivo, parla ora...");
+    console.log("startMic chiamato.");
+    if (recogRef.current) {
+      try {
+        recogRef.current.start();
+        setMicOn(true); // Imposta lo *stato desiderato* a 'on'
+      } catch (err) {
+        console.error("Errore DENTRO startMic durante recog.start():", err);
+        setMsg("Errore avvio microfono.");
+        setMicOn(false); // Fallito, imposta stato a 'off'
+      }
     }
   };
 
   const stopMic = () => {
-    if (micOn && recogRef.current) {
-      setMicOn(false);
-      recogRef.current.stop();
-      setMsg("Microfono disattivato.");
+    console.log("stopMic chiamato.");
+    if (recogRef.current) {
+      setMicOn(false); // Imposta lo *stato desiderato* a 'off'
+      recogRef.current.stop(); // Interrompi manualmente
     }
   };
 
@@ -136,7 +196,7 @@ export default function FaseTrascrizione() {
               : <span className="empty-text">Nessun suggerimento</span>}
           </div>
         </div>
-            </div>
+      </div>
       {/* Componenti aggiuntivi dopo le card principali */}
       <RispostaWebhook />
       <AssistenteVarGroup />
