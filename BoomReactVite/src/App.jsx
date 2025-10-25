@@ -63,7 +63,9 @@ function Fase1() {
         <li><b>Input:</b> Nome azienda, settore, problema</li>
         <li><b>Output:</b> Panoramica, lista competitors, analisi economica</li>
       </ul>
-      {/* Qui puoi aggiungere form, componenti smart, ricerca API ecc */}
+      <div style={{ marginTop: 18 }}>
+        <AssistenteVarGroup />
+      </div>
     </div>
   );
 }
