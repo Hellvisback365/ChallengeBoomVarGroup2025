@@ -1,7 +1,7 @@
 import { Routes, Route, useNavigate } from "react-router-dom";
 import FaseTrascrizione from "./FaseTrascrizione.jsx";
 import "./index.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import RispostaWebhook from "./RispostaWebhook.jsx";
 import AssistenteVarGroup from "./AssistenteVarGroup.jsx";
 
