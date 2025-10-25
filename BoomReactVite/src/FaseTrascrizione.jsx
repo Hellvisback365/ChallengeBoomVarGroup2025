@@ -199,7 +199,6 @@ export default function FaseTrascrizione() {
       </div>
       {/* Componenti aggiuntivi dopo le card principali */}
       <RispostaWebhook />
-      <AssistenteVarGroup />
       {/* Floating workflow button */}
       <button className="btn-workflow-fab" onClick={() => window.history.back()}>
         Torna al workflow
