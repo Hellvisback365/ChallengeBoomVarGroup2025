@@ -41,18 +41,49 @@ export default function FaseTrascrizione() {
 
 
   useEffect(() => {
+    console.log("useEffect eseguito. micOn:", micOn); // Log inizio useEffect
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
+      console.error("API Web Speech non supportata."); // Log errore supporto
       setMsg("API Web Speech non supportata su questo browser.");
       return;
     }
+    console.log("SpeechRecognition API supportata."); // Log supporto OK
+    
     const recog = new SpeechRecognition();
     recog.lang = "it-IT";
     recog.continuous = true;
     recog.interimResults = false;
     recogRef.current = recog;
-    recog.onend = () => micOn && recog.start();
+
+    recog.onstart = () => {
+        console.log("Evento: onstart - Riconoscimento avviato."); // Log avvio
+    };
+
+    recog.onend = () => {
+        console.log("Evento: onend - Riconoscimento terminato. Stato micOn:", micOn); // Log fine
+        // Riprova a partire SOLO se micOn è ancora true
+        if (micOn) {
+            console.log("onend: micOn è true, tento recog.start().");
+            try {
+                recog.start();
+            } catch (err) {
+                console.error("Errore DENTRO onend durante recog.start():", err); // Log errore riavvio
+                 setMicOn(false); // Forziamo lo stato off se non riparte
+                 setMsg("Errore riavvio microfono. Riprova.");
+            }
+        }
+    };
+
+    recog.onerror = (event) => {
+        console.error("Evento: onerror - Errore riconoscimento:", event.error, event.message); // Log ERRORE DETTAGLIATO
+        setMsg(`Errore microfono: ${event.error}`);
+        // Considera di fermare esplicitamente qui se necessario
+        setMicOn(false); // Assicurati che lo stato rifletta l'errore
+    };
+
     recog.onresult = (e) => {
+      console.log("Evento: onresult - Ricevuto risultato."); // Log risultato
       for (let i = e.resultIndex; i < e.results.length; ++i) {
         const tr = e.results[i][0].transcript;
         addMessageToChat(tr);
@@ -74,22 +105,47 @@ export default function FaseTrascrizione() {
           .catch((err) => console.error("Errore fetch:", err));
       }
     };
-    return () => { recog.stop(); };
-  }, [micOn, chat]);
+// Cleanup: Assicurati che stop venga chiamato quando il componente smonta o micOn cambia
+    return () => {
+        console.log("Cleanup useEffect: Chiamo recog.stop(). Stato micOn prima dello stop:", micOn); // Log cleanup
+        if (recogRef.current) {
+           recogRef.current.onend = null; // Disabilita onend prima di stoppare per evitare riavvii indesiderati
+           recogRef.current.onerror = null;
+           recogRef.current.onstart = null;
+           recogRef.current.onresult = null;
+           recogRef.current.stop();
+           console.log("Cleanup useEffect: recog.stop() chiamato.");
+        }
+    };
+    // Rimuovi 'chat' dalle dipendenze se non serve ricreare l'istanza recog ad ogni messaggio
+  }, [micOn]);
 
   const startMic = () => {
+    console.log("startMic chiamato. Stato micOn attuale:", micOn); // Log chiamata startMic
     if (!micOn && recogRef.current) {
-      setMicOn(true);
-      recogRef.current.start();
-      setMsg("🎤 Microfono attivo, parla ora...");
+        console.log("startMic: micOn è false e recogRef esiste. Tento recog.start().");
+        try {
+            recogRef.current.start();
+            setMicOn(true); // Imposta true SOLO DOPO che start() non ha dato errori
+            setMsg("🎤 Microfono attivo, parla ora...");
+        } catch (err) {
+            console.error("Errore DENTRO startMic durante recog.start():", err); // Log errore avvio
+            setMsg("Errore avvio microfono.");
+        }
+    } else {
+         console.log("startMic: condizione non soddisfatta (micOn:", micOn, "recogRef:", !!recogRef.current, ")");
     }
   };
 
   const stopMic = () => {
+    console.log("stopMic chiamato. Stato micOn attuale:", micOn); // Log chiamata stopMic
     if (micOn && recogRef.current) {
-      setMicOn(false);
-      recogRef.current.stop();
+      console.log("stopMic: micOn è true e recogRef esiste. Chiamo recog.stop().");
+      recogRef.current.stop(); // Chiama stop prima di cambiare stato
+      setMicOn(false); // Aggiorna stato dopo
       setMsg("Microfono disattivato.");
+    } else {
+        console.log("stopMic: condizione non soddisfatta (micOn:", micOn, "recogRef:", !!recogRef.current, ")");
     }
   };
 
