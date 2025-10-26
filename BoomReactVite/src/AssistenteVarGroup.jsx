@@ -16,19 +16,19 @@ function formatReportText(text) {
   // Converti markdown-like formatting in HTML strutturato
   let formatted = text
     // Header H1 (# Titolo)
-    .replace(/^# (.+)$/gm, '<h1 style="font-size: 1.5em; font-weight: bold; margin: 0.8em 0 0.4em 0; color: #23d7fc;">$1</h1>')
+    .replace(/^# (.+)$/gm, '<h1 class="text-2xl font-bold mt-3 mb-1 text-gray-500">$1</h1>')
     // Header H2 (## Sottotitolo)
-    .replace(/^## (.+)$/gm, '<h2 style="font-size: 1.3em; font-weight: bold; margin: 0.7em 0 0.3em 0; color: #38e99a;">$1</h2>')
+    .replace(/^## (.+)$/gm, '<h2 class="text-xl font-bold mt-2.5 mb-0.5 text-gray-400">$1</h2>')
     // Header H3 (### Sezione)
-    .replace(/^### (.+)$/gm, '<h3 style="font-size: 1.1em; font-weight: bold; margin: 0.6em 0 0.2em 0; color: #fff;">$1</h3>')
+    .replace(/^### (.+)$/gm, '<h3 class="text-lg font-bold mt-2 mb-0.5 text-gray-100">$1</h3>')
     // Header H4 (#### Sottoparagrafo) - più piccolo e indentato
-    .replace(/^#### (.+)$/gm, '<h4 style="font-size: 1em; font-weight: 600; margin: 0.5em 0 0.2em 1em; color: #ddd;">$1</h4>')
+    .replace(/^#### (.+)$/gm, '<h4 class="text-base font-semibold mt-1 mb-0.5 ml-4 text-gray-200">$1</h4>')
     // Grassetto (**testo**)
-    .replace(/\*\*(.+?)\*\*/g, '<strong style="font-weight: bold; color: #fff;">$1</strong>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong class="font-bold text-gray-50">$1</strong>')
     // Corsivo (*testo*)
-    .replace(/\*(.+?)\*/g, '<em style="font-style: italic;">$1</em>')
+    .replace(/\*(.+?)\*/g, '<em class="italic">$1</em>')
     // Liste puntate (- item o * item)
-    .replace(/^[*-] (.+)$/gm, '<li style="margin-left: 1.5em; margin-bottom: 0.3em;">$1</li>')
+    .replace(/^[*-] (.+)$/gm, '<li class="ml-6 mb-1 text-gray-200">$1</li>')
     // Paragrafi (righe vuote)
     .replace(/\n\n/g, '<br/><br/>');
   
@@ -92,19 +92,21 @@ export default function AssistenteVarGroup() {
       chatRef.current.scrollTop = chatRef.current.scrollHeight;
   }, [chat]);
 
-  createChat({
-    webhookUrl: 'https://valeriolorito.app.n8n.cloud/webhook/a9c35145-cfc7-4b7e-82b0-2ac19d93c3d0',
-    webhookConfig: {
-      method: 'POST',
-      headers: {}
-    },
-    chatInputKey: 'chatInput',
-    chatSessionKey: 'sessionId',
-    metadata: {},
-    mode: 'window',
-    showWelcomeScreen: false,
-    initialMessages: ['Ciao! Come posso aiutarti?']
-  });
+  useEffect(() => {
+    createChat({
+      webhookUrl: 'https://valeriolorito.app.n8n.cloud/webhook/a9c35145-cfc7-4b7e-82b0-2ac19d93c3d0',
+      webhookConfig: {
+        method: 'POST',
+        headers: {}
+      },
+      chatInputKey: 'chatInput',
+      chatSessionKey: 'sessionId',
+      metadata: {},
+      mode: 'window',
+      showWelcomeScreen: false,
+      initialMessages: ['Ciao! Come posso aiutarti?']
+    });
+  }, []);
 
   const inviaMessaggio = async () => {
     if (!input.trim()) return;
@@ -190,36 +192,18 @@ export default function AssistenteVarGroup() {
   };
 
   return (
-    <div className="main-cards-mobile">
-      <div className="glass-effect card-ai" style={{ maxWidth: 530, margin: "2em auto", padding: "1.5em" }}>
-        <div className="card-title">Assistente VarGroup</div>
-        <div ref={chatRef} style={{
-          background: "#232532",
-          height: 200,
-          overflowY: "auto",
-          borderRadius: "8px",
-          padding: "1em",
-          marginBottom: "1em"
-        }}>
+    <div className="w-full font-sans antialiased text-gray-100">
+      <div className="w-full max-w-xl mx-auto p-6 bg-gray-800 rounded-2xl shadow-custom-dark border border-gray-700 animate-slide-in-top">
+        <div className="text-3xl font-bold text-gray-600 mb-6 text-center">Assistente VarGroup</div>
+        <div ref={chatRef}
+          className="bg-gray-700 h-96 overflow-y-auto rounded-xl p-4 mb-6 text-gray-100 border border-gray-600 shadow-inner"
+        >
           {chat.length === 0 && (
-            <div style={{ color: "#888" }}>Ciao! Sono l'assistente VarGroup. Come posso aiutarti?</div>
+            <div className="text-gray-300 italic">Ciao! Sono l'assistente VarGroup. Come posso aiutarti?</div>
           )}
           {chat.map((m, i) => (
-            <div key={i} style={{
-              textAlign: m.ruolo === "utente" ? "right" : "left",
-              marginBottom: 8,
-            }}>
-              <span style={{
-                display: "inline-block",
-                background: m.ruolo === "utente" ? "#23d7fc" : "#38e99a",
-                color: "#fff",
-                borderRadius: "12px",
-                padding: "6px 16px",
-                maxWidth: "90%",
-                wordBreak: "break-word",
-                boxShadow: "0 2px 9px #2ec88344",
-                textAlign: "left"
-              }}>
+            <div key={i} className={`mb-3 ${m.ruolo === "utente" ? "text-right" : "text-left"} animate-fade-in`}>
+              <span className={`inline-block rounded-xl px-5 py-2.5 max-w-[90%] break-words shadow-md text-sm md:text-base ${m.ruolo === "utente" ? "bg-gray-700 text-white" : "bg-gray-600 text-gray-100"}`}>
                 {m.ruolo === "AI" ? (
                   <div dangerouslySetInnerHTML={{ __html: formatReportText(m.testo) }} />
                 ) : (
@@ -229,24 +213,23 @@ export default function AssistenteVarGroup() {
             </div>
           ))}
         </div>
-        <div style={{ display: "flex", gap: 10, marginBottom: 10 }}>
+        <div className="flex gap-3 mb-6">
           <input
             type="text"
             value={input}
-            className="vargroup-input"
-            style={{ flex: 1, borderRadius: "12px", border: "none", padding: "10px" }}
+            className="flex-1 rounded-xl border border-gray-600 px-4 py-2 bg-gray-700 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-all duration-300"
             placeholder="Scrivi qui..."
             disabled={loading}
             onChange={e => setInput(e.target.value)}
             onKeyDown={e => e.key === "Enter" ? inviaMessaggio() : null}
           />
-          <button className="btn-main" disabled={loading || !input.trim()} onClick={inviaMessaggio}>
+          <button className="bg-gray-700 text-white px-6 py-2 rounded-xl font-semibold hover:bg-gray-600 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-interactive" disabled={loading || !input.trim()} onClick={inviaMessaggio}>
             {loading ? "Invio..." : "Invia"}
           </button>
         </div>
-        <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+        <div className="flex gap-3 mb-6">
           <button
-            className={`btn-main ${chat.some(m => m.ruolo === 'AI') ? '' : 'opacity-50 cursor-not-allowed'}`}
+            className={`flex-1 bg-gray-600 text-gray-100 px-4 py-2 rounded-xl font-semibold hover:bg-gray-500 transition-all duration-300 shadow-sm ${chat.some(m => m.ruolo === 'AI') ? '' : 'opacity-50 cursor-not-allowed'}`}
             onClick={report}
             disabled={!chat.some(m => m.ruolo === 'AI')}
           >
@@ -254,19 +237,15 @@ export default function AssistenteVarGroup() {
           </button>
         </div>
         {reportStatus && (
-          <div style={{ marginBottom: 8 }}>
-            <div style={{ color: "#2ec883", marginBottom: 4 }}>
+          <div className="mb-4 text-center animate-fade-in">
+            <div className={`mb-2 text-sm md:text-base ${reportStatus.includes("successo") ? "text-green-500" : "text-red-500"}`}>
               {reportStatus}
               {reportStatus.includes("successo") && (
                 <a 
                   href="https://drive.google.com/drive/u/0/folders/1qF7B1O1XoqNQ-069_ZY6GZAoOunOmA9Z" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  style={{ 
-                    color: "#23d7fc", 
-                    textDecoration: "underline",
-                    cursor: "pointer"
-                  }}
+                  className="text-gray-600 underline cursor-pointer ml-1 hover:text-gray-500"
                 >
                   Google Drive
                 </a>
@@ -277,44 +256,37 @@ export default function AssistenteVarGroup() {
                 href={reportUrl} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                style={{ 
-                  color: "#23d7fc", 
-                  textDecoration: "underline",
-                  cursor: "pointer",
-                  wordBreak: "break-all"
-                }}
+                className="text-gray-600 underline cursor-pointer break-all text-sm md:text-base hover:text-gray-500"
               >
                 {reportUrl}
               </a>
             )}
           </div>
         )}
-      </div>
-      {/* Modal Pop-up per Carica Report - Stile Banner Warning */}
-      {showReportModal && (
-        <div className="fixed top-0 left-0 right-0 z-50 animate-slideDown">
-          <div className="bg-yellow-50 border-l-4 border-yellow-400 shadow-lg mx-4 mt-4 rounded-lg">
-            <div className="p-6">
-              <div className="flex items-start mb-4">
-                <div className="ml-0 flex-1">
-                  <h3 className="text-lg font-semibold text-yellow-800">Carica Report</h3>
-                  <p className="text-sm text-yellow-700 mt-1">Inserisci i dati per generare il report</p>
+        {/* Modal Pop-up per Carica Report */}
+        {showReportModal && (
+          <div className="fixed inset-0 bg-gray-950 bg-opacity-80 flex items-center justify-center z-50 animate-fade-in">
+            <div className="bg-gray-800 border border-gray-700 rounded-2xl shadow-custom-dark max-w-lg w-full mx-auto p-8 relative animate-slide-in-top">
+              <div className="flex items-start mb-6">
+                <div className="flex-1">
+                  <h3 className="text-2xl font-semibold text-gray-50">Carica Report</h3>
+                  <p className="text-sm text-gray-300 mt-2">Inserisci i dati per generare il report</p>
                 </div>
                 <button
                   onClick={() => setShowReportModal(false)}
                   disabled={reportLoading}
-                  className="text-yellow-400 hover:text-yellow-600"
+                  className="text-gray-400 hover:text-gray-200 transition-colors text-lg"
                 >
-                  <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
                   </svg>
                 </button>
               </div>
-              <div className="space-y-4">
+              <div className="space-y-5">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Nome e Cognome Consulente</label>
+                  <label className="block text-sm font-medium text-gray-200 mb-2">Nome e Cognome Consulente</label>
                   <input
-                    className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                    className="w-full border border-gray-600 rounded-xl px-4 py-2 bg-gray-700 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-all duration-300"
                     value={consultantName}
                     onChange={(e) => setConsultantName(e.target.value)}
                     placeholder="Mario Rossi"
@@ -322,25 +294,25 @@ export default function AssistenteVarGroup() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Nome Azienda</label>
+                  <label className="block text-sm font-medium text-gray-200 mb-2">Nome Azienda</label>
                   <input
-                    className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                    className="w-full border border-gray-600 rounded-xl px-4 py-2 bg-gray-700 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-all duration-300"
                     value={companyName}
                     onChange={(e) => setCompanyName(e.target.value)}
                     placeholder="VarGroup"
                     disabled={reportLoading}
                   />
                 </div>
-                <div className="flex gap-3 pt-2">
+                <div className="flex gap-4 pt-3">
                   <button
-                    className="flex-1 bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 disabled:opacity-60 font-semibold shadow"
+                    className="flex-1 bg-gray-700 text-white px-5 py-2.5 rounded-xl hover:bg-gray-600 disabled:opacity-60 font-semibold shadow-interactive transition-all duration-300"
                     onClick={handleSubmitReport}
                     disabled={reportLoading || !consultantName.trim() || !companyName.trim()}
                   >
                     {reportLoading ? "Invio..." : "Invia Report"}
                   </button>
                   <button
-                    className="flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 font-semibold"
+                    className="flex-1 bg-gray-600 text-gray-100 px-5 py-2.5 rounded-xl hover:bg-gray-500 font-semibold shadow-sm transition-all duration-300"
                     onClick={() => setShowReportModal(false)}
                     disabled={reportLoading}
                   >
@@ -350,8 +322,8 @@ export default function AssistenteVarGroup() {
               </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

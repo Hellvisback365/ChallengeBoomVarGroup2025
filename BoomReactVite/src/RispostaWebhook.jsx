@@ -26,35 +26,30 @@ export default function RispostaWebhook() {
   };
 
   return (
-    <div className="main-cards-mobile">
-      <div className="glass-effect card-chat" style={{ maxWidth: 500, margin: "2em auto", padding: "1.5em" }}>
-        <div className="card-title">Risposta Webhook</div>
+    <div className="w-full font-sans antialiased text-gray-100">
+      {/* Background glow effects */}
+      <div className="absolute top-1/4 left-0 w-80 h-80 bg-gray-600 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-500 pointer-events-none"></div>
+      <div className="absolute bottom-1/3 right-0 w-80 h-80 bg-gray-600 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2500 pointer-events-none"></div>
+
+      <div className="w-full max-w-xl mx-auto p-6 bg-gray-800 rounded-xl shadow-custom-dark border border-gray-700 animate-slide-in-top">
+        <div className="text-3xl font-bold text-gray-600 mb-6 text-center">Genera Report Finale</div>
         <textarea
-          className="webhook-textarea"
-          rows={3}
-          style={{ width: "100%", marginBottom: "1em", borderRadius: "12px", border: "none", fontSize: "1em", padding: "10px" }}
+          className="w-full mb-6 rounded-xl border border-gray-600 text-base p-4 bg-gray-700 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-all duration-300 shadow-inner"
+          rows={4}
           value={msg}
           onChange={e => setMsg(e.target.value)}
-          placeholder="Scrivi la frase da inviare..."
+          placeholder="Scrivi la frase da inviare per generare il report finale..."
         />
         <button
-          className="btn-main"
+          className="w-full bg-gray-700 text-white px-6 py-3 rounded-xl font-semibold hover:bg-gray-600 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed mb-6 shadow-interactive animate-glow-pulse"
           disabled={loading || !msg}
           onClick={sendToWebhook}
-          style={{marginBottom:"1em"}}
         >
-          {loading ? "Inviando..." : "Interrompi e Invia"}
+          {loading ? "Inviando..." : "Genera e Invia Report"}
         </button>
-        <div className="webhook-response" style={{
-          marginTop: 10,
-          background: "#232532",
-          color: "#38e99a",
-          padding: 10,
-          borderRadius: 10,
-          minHeight: "32px",
-        }}>
-          <strong>Risposta:</strong>
-          <div style={{paddingTop:6}}>{response}</div>
+        <div className="mt-4 bg-gray-700 border border-gray-600 text-green-400 p-4 rounded-xl min-h-[40px] shadow-inner animate-fade-in">
+          <strong className="text-gray-50 block mb-2">Risposta del Server:</strong>
+          <div className="text-gray-200 break-words">{response}</div>
         </div>
       </div>
     </div>
