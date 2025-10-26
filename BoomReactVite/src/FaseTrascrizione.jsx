@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import AssistenteVarGroup from "./AssistenteVarGroup.jsx";
+import ReturnToWorkflowButton from "./ReturnToWorkflowButton.jsx";
 
 const N8N_URL = "https://valeriolorito.app.n8n.cloud/webhook/trascrizione";
 const REPORT_URL = "https://valeriolorito.app.n8n.cloud/webhook/65f8138c-33a7-4d41-8adf-4991b675cc48";
@@ -236,15 +237,11 @@ export default function FaseTrascrizione() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-950 text-gray-100 font-sans antialiased relative overflow-hidden">
-      {/* Background glow effects */}
-      <div className="absolute top-1/3 left-0 w-72 h-72 bg-gray-600 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob pointer-events-none animation-delay-1000"></div>
-      <div className="absolute bottom-1/4 right-0 w-72 h-72 bg-gray-600 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-3000 pointer-events-none"></div>
-
+    <div className="min-h-screen bg-gray-700 text-gray-100 font-sans antialiased relative overflow-hidden">
+      
       {/* Barra App style e titolo */}
       <div className="flex items-center justify-between p-4 bg-gray-900 shadow-custom-dark border-b border-gray-800 animate-slide-in-top">
         <span className="text-3xl font-bold text-gray-700 tracking-wide">Fase 2</span>
-        <button className="text-gray-700 text-3xl p-2 rounded-lg hover:bg-gray-800 transition-colors duration-200" onClick={() => window.history.back()} title="Torna indietro">⟵</button>
       </div>
       {/* Stato del microfono */}
       <div className="bg-gray-900 border border-gray-800 rounded-2xl p-5 m-6 flex flex-col gap-3 shadow-custom-dark animate-fade-in">
@@ -294,7 +291,7 @@ export default function FaseTrascrizione() {
       )}
       {/* Modal per Carica Trascrizione */}
       {showTranscriptModal && (
-        <div className="fixed inset-0 bg-gray-950 bg-opacity-80 flex items-center justify-center z-50 animate-fade-in">
+        <div className="fixed inset-0 bg-gray-700 bg-opacity-80 flex items-center justify-center z-50 animate-fade-in">
           <div className="bg-gray-900 border border-gray-800 rounded-2xl shadow-custom-dark max-w-lg w-full mx-auto p-8 relative animate-slide-in-top">
             <div className="flex items-start mb-6">
               <div className="flex-1">
@@ -352,10 +349,7 @@ export default function FaseTrascrizione() {
           </div>
         </div>
       )}
-      {/* Floating workflow button */}
-      <button className="fixed bottom-8 right-8 bg-gray-800 text-white text-xl font-semibold px-6 py-3 rounded-full shadow-interactive hover:bg-gray-700 transition-all duration-300 z-20 animate-glow-pulse" onClick={() => window.history.back()}>
-        Torna al workflow
-      </button>
+      <ReturnToWorkflowButton />
     </div>
   );
 }
