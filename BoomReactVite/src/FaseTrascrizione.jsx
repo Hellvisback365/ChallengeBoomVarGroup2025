@@ -70,15 +70,8 @@ export default function FaseTrascrizione() {
         body: formData,
       });
       const text = (await res.text()).trim();
-      if (text === "La consulenza non esiste, hai effettuato una trascrizione di una consulenza ancora non documentata?") {
-        setUploadStatus(text);
-      } else if (text === "Trascrizione inserita!") {
-        setUploadStatus(
-          "Trascrizione inserita! Trovi la tua trascrizione in https://drive.google.com/drive/folders/1qF7B1O1XoqNQ-069_ZY6GZAoOunOmA9Z?usp=drive_link, nella cartella apposita!"
-        );
-      } else {
-        setUploadStatus(text || "Trascrizione inviata.");
-      }
+      // Mostra l'intera risposta del server
+      setUploadStatus(text || "Trascrizione inviata.");
     } catch (err) {
       setUploadStatus("Errore durante l'invio della trascrizione.");
     }
@@ -89,27 +82,32 @@ export default function FaseTrascrizione() {
     setTimeout(() => setUploadStatus(""), 8000);
   }
 
-  // Rende cliccabili eventuali URL nel messaggio di stato
+  // Rende cliccabili eventuali URL di Google Drive nel messaggio di stato
   function linkifyStatus(text) {
     if (!text) return null;
-    const urlRegex = /(https?:\/\/[^\s]+)/g;
-    const parts = text.split(urlRegex);
-    return parts.map((part, idx) => {
-      if (urlRegex.test(part)) {
-        return (
-          <a
-            key={`link-${idx}`}
-            href={part}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-gray-700 underline cursor-pointer hover:text-gray-600"
-          >
-            {part}
-          </a>
-        );
-      }
-      return <span key={`text-${idx}`}>{part}</span>;
-    });
+    const driveUrlRegex = /(https?:\/\/drive\.google\.com\/[^\s]+)/g;
+    const parts = text.split(driveUrlRegex);
+    
+    return (
+      <>
+        {parts.map((part, idx) => {
+          if (part.match(driveUrlRegex)) {
+            return (
+              <a
+                key={`link-${idx}`}
+                href={part}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-400 underline cursor-pointer hover:text-blue-300 font-semibold"
+              >
+                {part}
+              </a>
+            );
+          }
+          return <span key={`text-${idx}`}>{part}</span>;
+        })}
+      </>
+    );
   }
 
   // Questo useEffect viene eseguito UNA SOLA VOLTA al montaggio
@@ -284,7 +282,7 @@ export default function FaseTrascrizione() {
       {uploadStatus && (
         <div className="m-6 animate-fade-in">
           <div className="bg-gray-900 border border-gray-800 rounded-xl shadow-custom-light max-w-xl mx-auto p-4 text-center text-base"
-            style={{ color: uploadStatus.includes('successo') ? '#4ade80' : '#ef4444' }}>
+            style={{ color: uploadStatus.includes('successo') || uploadStatus.includes('drive.google.com') ? '#4ade80' : '#ef4444' }}>
             {linkifyStatus(uploadStatus)}
           </div>
         </div>

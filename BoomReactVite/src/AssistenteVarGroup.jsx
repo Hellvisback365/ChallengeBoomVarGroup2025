@@ -52,6 +52,34 @@ function toMarkdownStructure(text) {
   return md.trim();
 }
 
+// Rende cliccabili eventuali URL di Google Drive nel testo della risposta
+function linkifyText(text) {
+  if (!text) return null;
+  const driveUrlRegex = /(https?:\/\/drive\.google\.com\/[^\s]+)/g;
+  const parts = text.split(driveUrlRegex);
+  
+  return (
+    <>
+      {parts.map((part, idx) => {
+        if (part.match(driveUrlRegex)) {
+          return (
+            <a
+              key={`link-${idx}`}
+              href={part}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-400 underline cursor-pointer hover:text-blue-300"
+            >
+              {part}
+            </a>
+          );
+        }
+        return <span key={`text-${idx}`}>{part}</span>;
+      })}
+    </>
+  );
+}
+
 export default function AssistenteVarGroup() {
   // ID sessione persistente - inizializzato una sola volta
   const sessionIdRef = useRef(null);
@@ -159,8 +187,8 @@ export default function AssistenteVarGroup() {
         body: formData, // Non impostare manualmente Content-Type: il browser aggiunge boundary
       });
       const risposta = await res.text();
-      setReportUrl(risposta); // Salva l'URL ricevuto
-      setReportStatus("Report generato con successo! Trovi il file nella cartella: ");
+      // Mostra l'intera risposta del server
+      setReportStatus(risposta || "Report inviato con successo!");
     } catch (err) {
       setReportStatus("Errore invio report.");
       setReportUrl("");
@@ -222,29 +250,9 @@ export default function AssistenteVarGroup() {
         </div>
         {reportStatus && (
           <div className="mb-4 text-center animate-fade-in">
-            <div className={`mb-2 text-sm md:text-base ${reportStatus.includes("successo") ? "text-green-500" : "text-red-500"}`}>
-              {reportStatus}
-              {reportStatus.includes("successo") && (
-                <a 
-                  href="https://drive.google.com/drive/u/0/folders/1qF7B1O1XoqNQ-069_ZY6GZAoOunOmA9Z" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-gray-600 underline cursor-pointer ml-1 hover:text-gray-500"
-                >
-                  Google Drive
-                </a>
-              )}
+            <div className={`mb-2 text-sm md:text-base ${reportStatus.includes("successo") || reportStatus.includes("Success") || reportStatus.includes("drive.google.com") ? "text-green-500" : "text-red-500"}`}>
+              {linkifyText(reportStatus)}
             </div>
-            {reportUrl && (
-              <a 
-                href={reportUrl} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-gray-600 underline cursor-pointer break-all text-sm md:text-base hover:text-gray-500"
-              >
-                {reportUrl}
-              </a>
-            )}
           </div>
         )}
         {/* Modal Pop-up per Carica Report */}

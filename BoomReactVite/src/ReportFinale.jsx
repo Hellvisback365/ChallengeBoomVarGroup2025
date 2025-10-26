@@ -11,27 +11,32 @@ export default function ReportFinale() {
   const [response, setResponse] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // Rende cliccabili eventuali URL nel messaggio di risposta
+  // Rende cliccabili eventuali URL di Google Drive nel messaggio di risposta
   function linkifyResponse(text) {
     if (!text) return null;
-    const urlRegex = /(https?:\/\/[^\s]+)/g;
-    const parts = text.split(urlRegex);
-    return parts.map((part, idx) => {
-      if (urlRegex.test(part)) {
-        return (
-          <a
-            key={`link-${idx}`}
-            href={part}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ color: '#23d7fc', textDecoration: 'underline', cursor: 'pointer' }}
-          >
-            {part}
-          </a>
-        );
-      }
-      return <span key={`text-${idx}`}>{part}</span>;
-    });
+    const driveUrlRegex = /(https?:\/\/drive\.google\.com\/[^\s]+)/g;
+    const parts = text.split(driveUrlRegex);
+    
+    return (
+      <>
+        {parts.map((part, idx) => {
+          if (part.match(driveUrlRegex)) {
+            return (
+              <a
+                key={`link-${idx}`}
+                href={part}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-400 underline cursor-pointer hover:text-blue-300 font-semibold"
+              >
+                {part}
+              </a>
+            );
+          }
+          return <span key={`text-${idx}`}>{part}</span>;
+        })}
+      </>
+    );
   }
 
   const handleGenerateReport = async () => {
@@ -80,9 +85,9 @@ export default function ReportFinale() {
         </button>
 
         {response && (
-          <div className="mt-4 bg-gray-700 border border-gray-600 text-green-400 p-4 rounded-xl min-h-[40px] shadow-inner animate-fade-in">
+          <div className={`mt-4 bg-gray-700 border border-gray-600 p-4 rounded-xl min-h-[40px] shadow-inner animate-fade-in ${response.includes('drive.google.com') ? 'text-green-400' : 'text-red-400'}`}>
             <strong className="text-gray-50 block mb-2">Risposta del Server:</strong>
-            <div className="text-gray-200 break-words">{linkifyResponse(response)}</div>
+            <div className={`break-words ${response.includes('drive.google.com') ? 'text-green-300' : 'text-red-300'}`}>{linkifyResponse(response)}</div>
           </div>
         )}
       </div>
