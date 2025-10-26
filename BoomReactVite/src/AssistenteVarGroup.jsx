@@ -177,11 +177,8 @@ export default function AssistenteVarGroup() {
   // isNew come numero (JS number). Nei form-data verrà serializzato come "1" ma
   // il tipo sorgente è numerico per consentire parsing numerico lato server.
   formData.append('isNew', 1);
-      // Allegato binario: markdown dell'ultimo messaggio
-      const safeDateForFilename = data.replace(/\./g, '-');
-      const mdBlob = new Blob([ultimoMessaggioMarkdown || ''], { type: 'text/markdown' });
-      formData.append('file', mdBlob, `ultimo_messaggio_${safeDateForFilename}.md`);
-
+  formData.append('data', data);
+    
       const res = await fetch(REPORT_URL, {
         method: "POST",
         body: formData, // Non impostare manualmente Content-Type: il browser aggiunge boundary
