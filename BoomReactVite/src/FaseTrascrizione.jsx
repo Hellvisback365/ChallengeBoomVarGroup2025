@@ -167,15 +167,15 @@ export default function FaseTrascrizione() {
         
         // Usa l'aggiornamento funzionale per evitare lo "stale state"
         setChat((prevChat) => {
+          const previousChat = prevChat; // Chat antes del nuovo inserimento
           const newChat = prevChat + "\n" + tr;
           localStorage.setItem("conversazione", newChat);
-
-          // Esegui il fetch QUI DENTRO, usando 'newChat'
+          // Esegui il fetch QUI DENTRO, usando 'previousChat' come storico
           fetch(N8N_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            // Usa newChat per avere lo storico aggiornato
-            body: JSON.stringify({ frase: tr, storico: newChat }),
+            // Usa previousChat per avere lo storico aggiornato SENZA ultimo tr
+            body: JSON.stringify({ frase: tr, storico: previousChat }),
           })
             .then((resp) => resp.text())
             .then((data) => {
