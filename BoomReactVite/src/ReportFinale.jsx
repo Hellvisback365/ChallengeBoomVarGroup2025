@@ -65,10 +65,7 @@ export default function ReportFinale() {
 
   return (
     <div className="w-full font-sans antialiased text-gray-100">
-      {/* Background glow effects */}
-      <div className="absolute top-1/4 left-0 w-80 h-80 bg-gray-600 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-500 pointer-events-none"></div>
-      <div className="absolute bottom-1/3 right-0 w-80 h-80 bg-gray-600 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2500 pointer-events-none"></div>
-
+      
       <div className="w-full max-w-xl mx-auto p-6 bg-gray-800 rounded-xl shadow-custom-dark border border-gray-700 animate-slide-in-top">
         <div className="text-3xl font-bold text-gray-600 mb-6 text-center">Genera Report Finale</div>
         
