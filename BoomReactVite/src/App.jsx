@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import ReportFinale from "./ReportFinale.jsx";
 import AssistenteVarGroup from "./AssistenteVarGroup.jsx";
 import ReturnToWorkflowButton from "./ReturnToWorkflowButton.jsx";
+import { Analytics } from "@vercel/analytics/react";
 
 
 function WorkflowSteps() {
@@ -226,6 +227,7 @@ export default function App() {
   }, []); // L'array vuoto [] assicura che venga eseguito solo una volta
 
   return (
+    <>
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/fase1" element={<Fase1 />} />
@@ -234,5 +236,7 @@ export default function App() {
       {/* Per robustezza: qualsiasi altro path, ritorna Home */}
       <Route path="*" element={<Home />} />
     </Routes>
+    <Analytics />
+    </>
   );
 }
