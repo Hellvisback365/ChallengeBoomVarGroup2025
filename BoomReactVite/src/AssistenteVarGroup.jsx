@@ -174,7 +174,6 @@ export default function AssistenteVarGroup() {
       formData.append('storico', storicoChat);
       formData.append('consultantName', consultantName.toUpperCase());
   formData.append('companyName', companyName.toUpperCase());
-      formData.append('data', data);
   // isNew come numero (JS number). Nei form-data verrà serializzato come "1" ma
   // il tipo sorgente è numerico per consentire parsing numerico lato server.
   formData.append('isNew', 1);

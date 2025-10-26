@@ -53,7 +53,7 @@ function WorkflowSteps() {
     },
     {
       title: "Fase 1: Analisi Cliente e Settore con Zenith-Research",
-      description: "<strong>Obiettivo:</strong> Ottenere un'analisi preliminare approfondita del cliente e del suo mercato.<br/><br/><strong>Come Funziona:</strong> Interagisci con l'Assistente VarGroup. Fornisci il nome dell'azienda, il settore e il problema. L'AI raccoglierà informazioni economiche, identificherà i competitor e cercherà consulenti VarGroup esperti o con precedenti esperienze con il cliente.<br/><br/><strong>Risultato:</strong> Un report strutturato che funge da base per la consulenza.",
+      description: "<strong>Obiettivo:</strong> Ottenere un'analisi preliminare approfondita del cliente e del suo mercato.<br/><br/><strong>Come Funziona:</strong> Interagisci con Zenith-Research. Fornisci il nome dell'azienda, il settore e il problema. Zenith-Research raccoglierà informazioni economiche, identificherà i competitor e cercherà consulenti VarGroup esperti o con precedenti esperienze con il cliente.<br/><br/><strong>Risultato:</strong> Un report strutturato che funge da base per la consulenza.",
     },
     {
       title: "Fase 2: Trascrizione Live e Assistenza Meeting con Zenith-Transcript",
@@ -61,7 +61,7 @@ function WorkflowSteps() {
     },
     {
       title: "Fase 3: Generazione Report Finale con Zenith-Report",
-      description: "<strong>Obiettivo:</strong> Creare e archiviare il report finale della consulenza.<br/><br/><strong>Come Funziona:</strong> Inserisci i dettagli del consulente, dell'azienda e la data. Il sistema compilerà un report finale unendo i dati della Fase 1 e, se disponibile, la trascrizione della Fase 2. Il report sarà convertito in PDF e salvato automaticamente su Google Drive.<br/><br/><strong>Risultato:</strong> Documentazione completa e organizzata della consulenza, facilmente condivisibile.",
+      description: "<strong>Obiettivo:</strong> Creare e archiviare il report finale della consulenza.<br/><br/><strong>Come Funziona:</strong> Inserisci i dettagli del consulente, dell'azienda e la data. Il sistema compilerà un report finale unendo i dati della Fase 1 e la trascrizione della Fase 2. Il report sarà convertito in PDF e salvato automaticamente su Google Drive.<br/><br/><strong>Risultato:</strong> Documentazione completa e organizzata della consulenza, facilmente condivisibile.",
     },
   ];
 
