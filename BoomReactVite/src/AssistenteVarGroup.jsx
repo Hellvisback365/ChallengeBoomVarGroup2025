@@ -189,7 +189,7 @@ export default function AssistenteVarGroup() {
             <div key={i} className={`mb-3 ${m.ruolo === "utente" ? "text-right" : "text-left"} animate-fade-in`}>
               <span className={`inline-block rounded-xl px-5 py-2.5 max-w-[90%] break-words shadow-md text-sm md:text-base ${m.ruolo === "utente" ? "bg-gray-700 text-white" : "bg-gray-600 text-gray-100"}`}>
                 {m.ruolo === "AI" ? (
-                  <div dangerouslySetInnerHTML={{ __html: formatReportText(m.testo) }} />
+                  m.testo
                 ) : (
                   m.testo
                 )}
