@@ -67,7 +67,7 @@ export default function ReportFinale() {
     <div className="w-full font-sans antialiased text-gray-100">
       
       <div className="w-full max-w-xl mx-auto p-6 bg-gray-800 rounded-xl shadow-custom-dark border border-gray-700 animate-slide-in-top">
-        <div className="text-3xl font-bold text-gray-600 mb-6 text-center">Genera Report Finale</div>
+        <div className="text-3xl font-bold text-white mb-6 text-center">Genera Report Finale</div>
         
         <button
           className="w-full bg-gray-700 text-white px-6 py-3 rounded-xl font-semibold hover:bg-gray-600 transition-colors duration-300 mb-6 shadow-interactive animate-glow-pulse"

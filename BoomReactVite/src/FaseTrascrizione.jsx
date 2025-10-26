@@ -240,18 +240,18 @@ export default function FaseTrascrizione() {
     <div className="min-h-screen bg-gray-700 text-gray-100 font-sans antialiased relative overflow-hidden">
       
       {/* Barra App style e titolo */}
-      <div className="flex items-center justify-between p-4 bg-gray-900 shadow-custom-dark border-b border-gray-800 animate-slide-in-top">
-        <span className="text-3xl font-bold text-gray-700 tracking-wide">Fase 2</span>
+      <div className="flex items-center justify-between p-4 bg-gray-800 shadow-custom-dark border-b border-gray-800 animate-slide-in-top">
+        <span className="text-3xl font-bold text-white tracking-wide">Fase 2</span>
       </div>
       {/* Stato del microfono */}
-      <div className="bg-gray-900 border border-gray-800 rounded-2xl p-5 m-6 flex flex-col gap-3 shadow-custom-dark animate-fade-in">
+      <div className="bg-gray-800 border border-gray-800 rounded-2xl p-5 m-6 flex flex-col gap-3 shadow-custom-dark animate-fade-in">
         <div className="flex items-center gap-4">
           <button className={`p-4 rounded-full shadow-interactive transition-all duration-300 ${micOn ? "bg-red-600 hover:bg-red-700 text-white animate-glow-pulse" : "bg-gray-800 hover:bg-gray-700 text-white"} text-4xl`} onClick={micOn ? stopMic : startMic}>
             {micOn ? "🛑" : "🎤"}
           </button>
-          <span className="font-medium text-xl text-gray-50">{msg}</span>
+          <span className="font-medium text-xl text-white">{msg}</span>
         </div>
-        <button className="self-end text-gray-700 hover:text-gray-600 transition-colors duration-200 text-lg font-semibold px-4 py-2 rounded-xl hover:bg-gray-800" onClick={resetChat}>↻ Reset</button>
+        <button className="self-end text-white hover:text-gray-600 transition-colors duration-200 text-lg font-semibold px-4 py-2 rounded-xl hover:bg-gray-800" onClick={resetChat}>↻ Reset</button>
         <button
           className={`bg-gray-800 text-white px-5 py-2.5 rounded-xl font-semibold hover:bg-gray-700 transition-colors duration-300 shadow-interactive ${!chat || !chat.trim() ? 'opacity-50 cursor-not-allowed' : ''}`}
           onClick={() => setShowTranscriptModal(true)}
@@ -263,20 +263,20 @@ export default function FaseTrascrizione() {
       </div>
       {/* Chat e AI card scorrevoli */}
       <div className="flex flex-col md:flex-row gap-6 m-6 animate-fade-in">
-        <div className="flex-1 bg-gray-900 border border-gray-800 rounded-2xl shadow-custom-dark min-h-[220px] p-5">
-          <div className="text-2xl font-bold text-gray-700 mb-3">Chat</div>
+        <div className="flex-1 bg-gray-800 border border-gray-800 rounded-2xl shadow-custom-dark min-h-[220px] p-5">
+          <div className="text-2xl font-bold text-white mb-3">Chat</div>
           <div className="min-h-[80px] max-h-52 overflow-y-auto flex flex-col gap-2 p-2 bg-gray-800 rounded-lg shadow-inner border border-gray-700">
             {chat
               ? chat.split("\n").map((c, i) => c.trim() && <div className="self-end bg-gray-800 text-white rounded-xl px-4 py-2 text-base max-w-[85%] shadow-md animate-slide-in-top" key={i}>{c}</div>)
-              : <span className="text-gray-400 italic">Nessuna conversazione</span>}
+              : <span className="text-white italic">Nessuna conversazione</span>}
           </div>
         </div>
-        <div className="flex-1 bg-gray-900 border border-gray-800 rounded-2xl shadow-custom-dark min-h-[220px] p-5">
-          <div className="text-2xl font-bold text-gray-700 mb-3">Suggerimenti AI</div>
+        <div className="flex-1 bg-gray-800 border border-gray-800 rounded-2xl shadow-custom-dark min-h-[220px] p-5">
+          <div className="text-2xl font-bold text-white mb-3">Suggerimenti AI</div>
           <div className="min-h-[80px] max-h-52 overflow-y-auto flex flex-col gap-2 p-2 bg-gray-800 rounded-lg shadow-inner border border-gray-700" ref={aiRef}>
             {suggestions.length > 0
-              ? suggestions.map((s, i) => <div className="self-start bg-gray-700 text-gray-50 rounded-xl px-4 py-2 text-base max-w-[85%] shadow-md animate-slide-in-top" key={i}>{s}</div>)
-              : <span className="text-gray-400 italic">Nessun suggerimento</span>}
+              ? suggestions.map((s, i) => <div className="self-start bg-gray-700 text-white rounded-xl px-4 py-2 text-base max-w-[85%] shadow-md animate-slide-in-top" key={i}>{s}</div>)
+              : <span className="text-white italic">Nessun suggerimento</span>}
           </div>
         </div>
       </div>
@@ -292,11 +292,11 @@ export default function FaseTrascrizione() {
       {/* Modal per Carica Trascrizione */}
       {showTranscriptModal && (
         <div className="fixed inset-0 bg-gray-700 bg-opacity-80 flex items-center justify-center z-50 animate-fade-in">
-          <div className="bg-gray-900 border border-gray-800 rounded-2xl shadow-custom-dark max-w-lg w-full mx-auto p-8 relative animate-slide-in-top">
+          <div className="bg-gray-800 border border-gray-800 rounded-2xl shadow-custom-dark max-w-lg w-full mx-auto p-8 relative animate-slide-in-top">
             <div className="flex items-start mb-6">
               <div className="flex-1">
-                <h3 className="text-2xl font-semibold text-gray-50">Carica Trascrizione</h3>
-                <p className="text-sm text-gray-400 mt-2">Inserisci i dati per inviare la trascrizione corrente</p>
+                <h3 className="text-2xl font-semibold text-white">Carica Trascrizione</h3>
+                <p className="text-sm text-white mt-2">Inserisci i dati per inviare la trascrizione corrente</p>
               </div>
               <button
                 onClick={() => setShowTranscriptModal(false)}
@@ -310,7 +310,7 @@ export default function FaseTrascrizione() {
             </div>
             <div className="space-y-5">
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Nome e Cognome Consulente</label>
+                <label className="block text-sm font-medium text-white mb-2">Nome e Cognome Consulente</label>
                 <input
                   className="w-full border border-gray-700 rounded-xl px-4 py-2 bg-gray-800 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-all duration-300"
                   value={nomeConsulente}
@@ -320,7 +320,7 @@ export default function FaseTrascrizione() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Nome Azienda Consulenza</label>
+                <label className="block text-sm font-medium text-white mb-2">Nome Azienda Consulenza</label>
                 <input
                   className="w-full border border-gray-700 rounded-xl px-4 py-2 bg-gray-800 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-all duration-300"
                   value={nomeAzienda}

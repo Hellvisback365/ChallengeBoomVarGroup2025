@@ -194,7 +194,7 @@ export default function AssistenteVarGroup() {
   return (
     <div className="w-full font-sans antialiased text-gray-100">
       <div className="w-full max-w-xl mx-auto p-6 bg-gray-800 rounded-2xl shadow-custom-dark border border-gray-700 animate-slide-in-top">
-        <div className="text-3xl font-bold text-gray-600 mb-6 text-center">Assistente VarGroup</div>
+        <div className="text-3xl font-bold text-white mb-6 text-center">Assistente VarGroup</div>
         <div ref={chatRef}
           className="bg-gray-700 h-96 overflow-y-auto rounded-xl p-4 mb-6 text-gray-100 border border-gray-600 shadow-inner"
         >
