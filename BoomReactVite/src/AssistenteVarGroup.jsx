@@ -92,22 +92,6 @@ export default function AssistenteVarGroup() {
       chatRef.current.scrollTop = chatRef.current.scrollHeight;
   }, [chat]);
 
-  useEffect(() => {
-    createChat({
-      webhookUrl: 'https://valeriolorito.app.n8n.cloud/webhook/a9c35145-cfc7-4b7e-82b0-2ac19d93c3d0',
-      webhookConfig: {
-        method: 'POST',
-        headers: {}
-      },
-      chatInputKey: 'chatInput',
-      chatSessionKey: 'sessionId',
-      metadata: {},
-      mode: 'window',
-      showWelcomeScreen: false,
-      initialMessages: ['Ciao! Come posso aiutarti?']
-    });
-  }, []);
-
   const inviaMessaggio = async () => {
     if (!input.trim()) return;
     setLoading(true);
