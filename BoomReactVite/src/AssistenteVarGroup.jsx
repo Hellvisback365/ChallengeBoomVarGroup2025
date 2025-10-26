@@ -1,8 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
-import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
 
-const VARGROUP_URL = "https://valeriolorito.app.n8n.cloud/webhook/a9c35145-cfc7-4b7e-82b0-2ac19d93c3d0/chat";
-const REPORT_URL = "https://valeriolorito.app.n8n.cloud/webhook/65f8138c-33a7-4d41-8adf-4991b675cc48";
+const VARGROUP_URL = import.meta.env.VITE_VARGROUP_URL;
+const REPORT_URL = import.meta.env.VITE_REPORT_URL;
 
 // Genera un ID univoco di sessione
 function generateSessionId() {

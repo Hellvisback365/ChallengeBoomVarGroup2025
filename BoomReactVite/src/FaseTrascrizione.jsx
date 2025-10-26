@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import AssistenteVarGroup from "./AssistenteVarGroup.jsx";
 import ReturnToWorkflowButton from "./ReturnToWorkflowButton.jsx";
 
-const N8N_URL = "https://valeriolorito.app.n8n.cloud/webhook/trascrizione";
-const REPORT_URL = "https://valeriolorito.app.n8n.cloud/webhook/65f8138c-33a7-4d41-8adf-4991b675cc48";
+const N8N_URL = import.meta.env.VITE_TRANSCRIPT_URL;
+const REPORT_URL = import.meta.env.VITE_REPORT_URL;
 
 export default function FaseTrascrizione() {
   const [micOn, setMicOn] = useState(false);
