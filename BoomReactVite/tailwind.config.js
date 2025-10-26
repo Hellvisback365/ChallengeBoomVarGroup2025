@@ -38,12 +38,17 @@ export default {
         glow: {
           '0%, 100%': { boxShadow: '0 0 5px rgba(99, 102, 241, 0.4), 0 0 15px rgba(99, 102, 241, 0.2)' },
           '50%': { boxShadow: '0 0 10px rgba(99, 102, 241, 0.6), 0 0 25px rgba(99, 102, 241, 0.4)' },
+        },
+        slideInFromTopModal: {
+          '0%': { transform: 'translateY(-50px)', opacity: 0 },
+          '100%': { transform: 'translateY(0)', opacity: 1 },
         }
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-out forwards',
         'slide-in-top': 'slideInFromTop 0.6s ease-out forwards',
         'glow-pulse': 'glow 2s infinite alternate',
+        'slide-in-top-modal': 'slideInFromTopModal 0.3s ease-out forwards',
       }
     },
   },
