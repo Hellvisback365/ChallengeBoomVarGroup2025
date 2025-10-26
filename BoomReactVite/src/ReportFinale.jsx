@@ -7,6 +7,7 @@ export default function ReportFinale() {
   const [consultantName, setConsultantName] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [reportDate, setReportDate] = useState("");
+  const [userMessage, setUserMessage] = useState("");
   const [response, setResponse] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -49,6 +50,7 @@ export default function ReportFinale() {
           consultantName: consultantName.toUpperCase(),
           companyName: companyName.toUpperCase(),
           data: formattedDate,
+          userMessage: userMessage,
         }),
       });
       const text = await res.text();
@@ -61,6 +63,7 @@ export default function ReportFinale() {
     setConsultantName("");
     setCompanyName("");
     setReportDate("");
+    setUserMessage("");
   };
 
   return (
@@ -125,6 +128,17 @@ export default function ReportFinale() {
                     value={companyName}
                     onChange={(e) => setCompanyName(e.target.value)}
                     placeholder="VarGroup S.p.A."
+                    disabled={loading}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-200 mb-2">Messaggio</label>
+                  <textarea
+                    rows={3}
+                    className="w-full border border-gray-600 rounded-xl px-4 py-2 bg-gray-700 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-all duration-300"
+                    value={userMessage}
+                    onChange={(e) => setUserMessage(e.target.value)}
+                    placeholder="Inserisci un messaggio opzionale per il report..."
                     disabled={loading}
                   />
                 </div>
