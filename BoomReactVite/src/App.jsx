@@ -7,7 +7,9 @@ import AssistenteVarGroup from "./AssistenteVarGroup.jsx";
 import ReturnToWorkflowButton from "./ReturnToWorkflowButton.jsx";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
-
+import { BiSearch } from "react-icons/bi";
+import { BsMicFill } from "react-icons/bs";
+import { GiBrain } from "react-icons/gi";
 
 
 function WorkflowSteps() {
@@ -104,7 +106,9 @@ function WorkflowSteps() {
           <div className="group bg-gray-800 border border-gray-800 rounded-2xl p-8 min-w-[280px] max-w-[360px] shadow-custom-dark transition-all duration-500 cursor-pointer relative overflow-hidden transform hover:-translate-y-2 hover:scale-102 animate-fade-in snap-center" onClick={() => navigate("fase1")}>
             <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-gray-800 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             <div className="relative z-10">
-              <div className="text-6xl text-gray-700 mb-6 flex justify-center items-center h-20">🔍</div>
+              <div className="text-6xl text-gray-700 mb-6 flex justify-center items-center h-20">
+                <BiSearch className="text-6xl text-blue-400 animate-pulse" />
+              </div>
               <h2 className="text-3xl font-bold text-white mb-3 group-hover:text-gray-600 transition-colors duration-300">Fase 1</h2>
               <p className="text-white text-lg group-hover:text-gray-200 transition-colors duration-300">Analizza l'azienda che ha richiesto la tua consulenza con Zenith-Research.</p>
             </div>
@@ -112,7 +116,9 @@ function WorkflowSteps() {
           <div className="group bg-gray-800 border border-gray-800 rounded-2xl p-8 min-w-[280px] max-w-[360px] shadow-custom-dark transition-all duration-500 cursor-pointer relative overflow-hidden transform hover:-translate-y-2 hover:scale-102 animate-fade-in animation-delay-200 snap-center" onClick={() => navigate("trascrizione")}>
             <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-gray-800 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             <div className="relative z-10">
-              <div className="text-6xl text-gray-700 mb-6 flex justify-center items-center h-20">🎤</div>
+              <div className="text-6xl text-gray-700 mb-6 flex justify-center items-center h-20">
+                <BsMicFill className="text-6xl text-pink-400 animate-pulse" />
+              </div>
               <h2 className="text-3xl font-bold text-white mb-3 group-hover:text-gray-600 transition-colors duration-300">Fase 2</h2>
               <p className="text-white text-lg group-hover:text-gray-200 transition-colors duration-300">Trascrivi la conversazione con l'azienda cliente e ottieni suggerimenti in tempo reale con Zenith-Transcript.</p>
             </div>
@@ -120,7 +126,9 @@ function WorkflowSteps() {
           <div className="group bg-gray-800 border border-gray-800 rounded-2xl p-8 min-w-[280px] max-w-[360px] shadow-custom-dark transition-all duration-500 cursor-pointer relative overflow-hidden transform hover:-translate-y-2 hover:scale-102 animate-fade-in animation-delay-400 snap-center" onClick={() => navigate("report")}>
             <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-gray-800 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             <div className="relative z-10">
-              <div className="text-6xl text-gray-700 mb-6 flex justify-center items-center h-20">🧠</div>
+              <div className="text-6xl text-gray-700 mb-6 flex justify-center items-center h-20">
+                <GiBrain className="text-6xl text-cyan-400 animate-pulse" />
+              </div>
               <h2 className="text-3xl font-bold text-white mb-3 group-hover:text-gray-600 transition-colors duration-300">Fase 3</h2>
               <p className="text-white text-lg group-hover:text-gray-200 transition-colors duration-300">Genera un report conclusivo con precisione ed efficienza tramite Zenith-Report.</p>
             </div>
