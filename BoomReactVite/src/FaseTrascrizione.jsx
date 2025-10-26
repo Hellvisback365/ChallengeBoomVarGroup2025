@@ -237,120 +237,126 @@ export default function FaseTrascrizione() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-700 text-gray-100 font-sans antialiased relative overflow-hidden">
-      
-      {/* Barra App style e titolo */}
-      <div className="flex items-center justify-between p-4 bg-gray-800 shadow-custom-dark border-b border-gray-800 animate-slide-in-top">
-        <span className="text-3xl font-bold text-white tracking-wide">Fase 2</span>
-      </div>
-      <p className="text-gray-300 mb-6 text-center text-lg italic animate-fade-in px-6">Acquisisci e analizza conversazioni in tempo reale con il supporto AI.</p>
-      {/* Stato del microfono */}
-      <div className="bg-gray-800 border border-gray-800 rounded-2xl p-5 m-6 flex flex-col gap-3 shadow-custom-dark animate-fade-in">
-        <div className="flex items-center gap-4">
-          <button className={`p-4 rounded-full shadow-interactive transition-all duration-300 ${micOn ? "bg-red-600 hover:bg-red-700 text-white animate-glow-pulse" : "bg-gray-800 hover:bg-gray-700 text-white"} text-4xl`} onClick={micOn ? stopMic : startMic}>
-            {micOn ? "🛑" : "🎤"}
-          </button>
-          <span className="font-medium text-xl text-white">{msg}</span>
-        </div>
-        <button className="self-end text-white hover:text-gray-600 transition-colors duration-200 text-lg font-semibold px-4 py-2 rounded-xl hover:bg-gray-800" onClick={resetChat}>↻ Reset</button>
-        <button
-          className={`bg-gray-800 text-white px-5 py-2.5 rounded-xl font-semibold hover:bg-gray-700 transition-colors duration-300 shadow-interactive ${!chat || !chat.trim() ? 'opacity-50 cursor-not-allowed' : ''}`}
-          onClick={() => setShowTranscriptModal(true)}
-          disabled={!chat || !chat.trim()}
-          title={!chat || !chat.trim() ? 'Nessun testo trascritto' : 'Apri Carica Trascrizione'}
-        >
-          📤 Carica Trascrizione
-        </button>
-      </div>
-      {/* Chat e AI card scorrevoli */}
-      <div className="flex flex-col md:flex-row gap-6 m-6 animate-fade-in">
-        <div className="flex-1 bg-gray-800 border border-gray-800 rounded-2xl shadow-custom-dark min-h-[220px] p-5">
-          <div className="text-2xl font-bold text-white mb-3">Chat</div>
-          <div className="min-h-[80px] max-h-52 overflow-y-auto flex flex-col gap-2 p-2 bg-gray-800 rounded-lg shadow-inner border border-gray-700">
-            {chat
-              ? chat.split("\n").map((c, i) => c.trim() && <div className="self-end bg-gray-800 text-white rounded-xl px-4 py-2 text-base max-w-[85%] shadow-md animate-slide-in-top" key={i}>{c}</div>)
-              : <span className="text-white italic">Nessuna conversazione</span>}
+    <div className="min-h-screen bg-gray-900 text-gray-100 font-sans antialiased flex items-center justify-center overflow-auto px-2 md:px-0">
+      <div className="w-full max-w-3xl mx-auto p-6 bg-gray-800 rounded-xl shadow-custom-dark border border-gray-700 animate-slide-in-top">
+        {/* Title Bar */}
+        <div className="text-3xl font-bold text-white mb-6 text-center">Fase 2</div>
+        <p className="text-gray-300 mb-6 text-center text-lg italic animate-fade-in">Acquisisci e analizza conversazioni in tempo reale con il supporto AI.</p>
+        {/* Microphone/Actions Row */}
+        <div className="w-full flex flex-col gap-4 mb-6">
+          <div className="flex items-center gap-4 justify-center">
+            <button className={`p-4 rounded-full shadow-interactive transition-all duration-300 ${micOn ? "bg-red-600 hover:bg-red-700 text-white animate-glow-pulse" : "bg-gray-700 hover:bg-gray-600 text-white"} text-4xl`} onClick={micOn ? stopMic : startMic}>
+              {micOn ? "🛑" : "🎤"}
+            </button>
+            <span className="font-medium text-xl text-white">{msg}</span>
+          </div>
+          <div className="flex gap-4 w-full">
+            <button className="flex-1 bg-gray-700 text-white px-4 py-2 rounded-xl hover:bg-gray-600 font-semibold transition-all duration-300 shadow-interactive" onClick={resetChat}>
+              ↻ Reset
+            </button>
+            <button
+              className={`flex-1 bg-gray-700 text-white px-5 py-2.5 rounded-xl font-semibold hover:bg-gray-600 transition-colors duration-300 shadow-interactive ${!chat || !chat.trim() ? 'opacity-50 cursor-not-allowed' : ''}`}
+              onClick={() => setShowTranscriptModal(true)}
+              disabled={!chat || !chat.trim()}
+              title={!chat || !chat.trim() ? 'Nessun testo trascritto' : 'Apri Carica Trascrizione'}
+            >
+              📤 Carica Trascrizione
+            </button>
           </div>
         </div>
-        <div className="flex-1 bg-gray-800 border border-gray-800 rounded-2xl shadow-custom-dark min-h-[220px] p-5">
-          <div className="text-2xl font-bold text-white mb-3">Suggerimenti AI</div>
-          <div className="min-h-[80px] max-h-52 overflow-y-auto flex flex-col gap-2 p-2 bg-gray-800 rounded-lg shadow-inner border border-gray-700" ref={aiRef}>
-            {suggestions.length > 0
-              ? suggestions.map((s, i) => <div className="self-start bg-gray-700 text-white rounded-xl px-4 py-2 text-base max-w-[85%] shadow-md animate-slide-in-top" key={i}>{s}</div>)
-              : <span className="text-white italic">Nessun suggerimento</span>}
-          </div>
-        </div>
-      </div>
-      {/* Componenti aggiuntivi dopo le card principali */}
-      {uploadStatus && (
-        <div className="m-6 animate-fade-in">
-          <div className="bg-gray-900 border border-gray-800 rounded-xl shadow-custom-light max-w-xl mx-auto p-4 text-center text-base"
-            style={{ color: uploadStatus.includes('successo') ? '#4ade80' : '#ef4444' }}>
-            {linkifyStatus(uploadStatus)}
-          </div>
-        </div>
-      )}
-      {/* Modal per Carica Trascrizione */}
-      {showTranscriptModal && (
-        <div className="fixed inset-0 bg-gray-700 bg-opacity-80 flex items-center justify-center z-50 animate-fade-in">
-          <div className="bg-gray-800 border border-gray-800 rounded-2xl shadow-custom-dark max-w-lg w-full mx-auto p-8 relative animate-slide-in-top">
-            <div className="flex items-start mb-6">
-              <div className="flex-1">
-                <h3 className="text-2xl font-semibold text-white">Carica Trascrizione</h3>
-                <p className="text-sm text-white mt-2">Inserisci i dati per inviare la trascrizione corrente</p>
-              </div>
-              <button
-                onClick={() => setShowTranscriptModal(false)}
-                disabled={uploadLoading}
-                className="text-gray-400 hover:text-gray-200 transition-colors text-lg"
-              >
-                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-                </svg>
-              </button>
+        {/* Cards: Chat & Suggestions in flex-row */}
+        <div className="flex flex-col md:flex-row gap-6 mb-6 animate-fade-in">
+          <div className="flex-1 bg-gray-800 border border-gray-700 rounded-2xl shadow-inner min-h-[350px] max-h-[420px] p-5">
+            <div className="text-2xl font-bold text-white mb-3">Chat</div>
+            <div className="min-h-[140px] max-h-[340px] overflow-y-auto flex flex-col gap-2 p-2 bg-gray-800 rounded-lg shadow-inner border border-gray-700">
+              {chat
+                ? chat.split("\n").map((c, i) => c.trim() && <div className="self-end bg-gray-700 text-white rounded-xl px-4 py-2 text-base max-w-[85%] shadow-md animate-slide-in-top" key={i}>{c}</div>)
+                : <span className="text-white italic">Nessuna conversazione</span>}
             </div>
-            <div className="space-y-5">
-              <div>
-                <label className="block text-sm font-medium text-white mb-2">Nome e Cognome Consulente</label>
-                <input
-                  className="w-full border border-gray-700 rounded-xl px-4 py-2 bg-gray-800 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-all duration-300"
-                  value={nomeConsulente}
-                  onChange={(e) => setNomeConsulente(e.target.value)}
-                  placeholder="Mario Rossi"
-                  disabled={uploadLoading}
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-white mb-2">Nome Azienda Consulenza</label>
-                <input
-                  className="w-full border border-gray-700 rounded-xl px-4 py-2 bg-gray-800 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-all duration-300"
-                  value={nomeAzienda}
-                  onChange={(e) => setNomeAzienda(e.target.value)}
-                  placeholder="VarGroup"
-                  disabled={uploadLoading}
-                />
-              </div>
-              <div className="flex gap-4 pt-3">
+          </div>
+          <div className="flex-1 bg-gray-800 border border-gray-700 rounded-2xl shadow-inner min-h-[350px] max-h-[420px] p-5">
+            <div className="text-2xl font-bold text-white mb-3">Suggerimenti AI</div>
+            <div className="min-h-[140px] max-h-[340px] overflow-y-auto flex flex-col gap-2 p-2 bg-gray-800 rounded-lg shadow-inner border border-gray-700" ref={aiRef}>
+              {suggestions.length > 0
+                ? suggestions.map((s, i) => <div className="self-start bg-gray-700 text-white rounded-xl px-4 py-2 text-base max-w-[85%] shadow-md animate-slide-in-top" key={i}>{s}</div>)
+                : <span className="text-white italic">Nessun suggerimento</span>}
+            </div>
+          </div>
+        </div>
+        {/* Feedback/Status area */}
+        {uploadStatus && (
+          <div className="mb-6 animate-fade-in">
+            <div className={`bg-gray-900 border rounded-xl shadow-custom-light max-w-3xl mx-auto p-4 text-center text-base ${uploadStatus.includes('successo') || uploadStatus.includes('inserita') ? 'border-green-500 text-green-400' : 'border-red-500 text-red-400'}`}
+            >
+              {linkifyStatus(uploadStatus)}
+            </div>
+          </div>
+        )}
+        {/* Modal - Carica Trascrizione */}
+        {showTranscriptModal && (
+          <div className="fixed inset-0 bg-gray-950 bg-opacity-80 flex items-center justify-center z-50 animate-fade-in">
+            <div className="bg-gray-800 border border-gray-700 rounded-2xl shadow-custom-dark max-w-lg w-full mx-auto p-8 relative animate-slide-in-top">
+              <div className="flex items-start mb-6">
+                <div className="flex-1">
+                  <h3 className="text-2xl font-semibold text-gray-50">Carica Trascrizione</h3>
+                  <p className="text-sm text-gray-300 mt-2">Inserisci i dati per inviare la trascrizione corrente</p>
+                </div>
                 <button
-                  className="flex-1 bg-gray-800 text-white px-5 py-2.5 rounded-xl hover:bg-gray-700 disabled:opacity-60 font-semibold shadow-interactive transition-all duration-300"
-                  onClick={handleUploadTranscript}
-                  disabled={uploadLoading || !nomeConsulente.trim() || !nomeAzienda.trim()}
-                >
-                  {uploadLoading ? "Invio..." : "Carica Trascrizione"}
-                </button>
-                <button
-                  className="flex-1 bg-gray-700 text-gray-100 px-5 py-2.5 rounded-xl hover:bg-gray-600 font-semibold shadow-sm transition-all duration-300"
                   onClick={() => setShowTranscriptModal(false)}
                   disabled={uploadLoading}
+                  className="text-gray-400 hover:text-gray-200 transition-colors text-lg"
                 >
-                  Annulla
+                  <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                  </svg>
                 </button>
+              </div>
+              <div className="space-y-5">
+                <div>
+                  <label className="block text-sm font-medium text-gray-200 mb-2">Nome e Cognome Consulente</label>
+                  <input
+                    className="w-full border border-gray-600 rounded-xl px-4 py-2 bg-gray-700 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-all duration-300"
+                    value={nomeConsulente}
+                    onChange={(e) => setNomeConsulente(e.target.value)}
+                    placeholder="Mario Rossi"
+                    disabled={uploadLoading}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-200 mb-2">Nome Azienda Consulenza</label>
+                  <input
+                    className="w-full border border-gray-600 rounded-xl px-4 py-2 bg-gray-700 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-all duration-300"
+                    value={nomeAzienda}
+                    onChange={(e) => setNomeAzienda(e.target.value)}
+                    placeholder="VarGroup"
+                    disabled={uploadLoading}
+                  />
+                </div>
+                <div className="flex gap-4 pt-3">
+                  <button
+                    className="flex-1 bg-gray-700 text-white px-5 py-2.5 rounded-xl hover:bg-gray-600 disabled:opacity-60 font-semibold shadow-interactive transition-all duration-300"
+                    onClick={handleUploadTranscript}
+                    disabled={uploadLoading || !nomeConsulente.trim() || !nomeAzienda.trim()}
+                  >
+                    {uploadLoading ? "Invio..." : "Carica Trascrizione"}
+                  </button>
+                  <button
+                    className="flex-1 bg-gray-600 text-gray-100 px-5 py-2.5 rounded-xl hover:bg-gray-500 font-semibold shadow-sm transition-all duration-300"
+                    onClick={() => setShowTranscriptModal(false)}
+                    disabled={uploadLoading}
+                  >
+                    Annulla
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
-      <ReturnToWorkflowButton />
+        )}
+      </div>
+      {/* Floating return button */}
+      <div className="fixed bottom-6 right-6 z-50">
+        <ReturnToWorkflowButton />
+      </div>
     </div>
   );
 }
