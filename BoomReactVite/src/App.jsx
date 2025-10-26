@@ -4,43 +4,41 @@ import "./index.css";
 import { useState, useEffect } from "react";
 import RispostaWebhook from "./RispostaWebhook.jsx";
 import AssistenteVarGroup from "./AssistenteVarGroup.jsx";
+import ReturnToWorkflowButton from "./ReturnToWorkflowButton.jsx";
 
 
 function WorkflowSteps() {
   const [showWelcome, setShowWelcome] = useState(true);
   const navigate = useNavigate();
   return (
-    <div className="bg-gray-950 min-h-screen flex flex-col items-center pt-16 font-sans antialiased text-gray-100 relative overflow-hidden">
-      {/* Background glow effects */}
-      <div className="absolute top-1/4 left-0 w-80 h-80 bg-gray-600 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob pointer-events-none"></div>
-      <div className="absolute top-1/2 right-0 w-80 h-80 bg-gray-600 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000 pointer-events-none"></div>
-
+    <div className="bg-gray-700 min-h-screen flex flex-col items-center pt-16 font-sans antialiased text-gray-100 relative overflow-hidden">
+      
       {/* Titolo con effetto */}
       <h1 className="text-4xl md:text-6xl font-extrabold text-gray-50 text-center mb-16 drop-shadow-lg animate-slide-in-top">
         Workflow AI <span className="text-gray-700">Suite</span>
       </h1>
-      <div className="flex flex-wrap justify-center gap-8 mt-5 w-full max-w-6xl px-4">
-        <div className="group bg-gray-900 border border-gray-800 rounded-2xl p-8 m-3 min-w-[280px] max-w-[360px] shadow-custom-dark hover:shadow-interactive transition-all duration-500 cursor-pointer relative overflow-hidden transform hover:-translate-y-2 hover:scale-102 animate-fade-in" onClick={() => navigate("fase1")}>
+      <div className="flex justify-center gap-8 mt-5 w-full max-w-6xl px-4 flex-nowrap overflow-x-auto">
+        <div className="group bg-gray-900 border border-gray-800 rounded-2xl p-8 min-w-[280px] max-w-[360px] shadow-custom-dark transition-all duration-500 cursor-pointer relative overflow-hidden transform hover:-translate-y-2 hover:scale-102 animate-fade-in" onClick={() => navigate("fase1")}>
           <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-gray-800 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
           <div className="relative z-10">
-            <div className="text-6xl text-gray-700 mb-6 flex justify-center items-center h-20 group-hover:animate-glow-pulse">🔍</div>
+            <div className="text-6xl text-gray-700 mb-6 flex justify-center items-center h-20">🔍</div>
             <h2 className="text-3xl font-bold text-gray-50 mb-3 group-hover:text-gray-600 transition-colors duration-300">Fase 1</h2>
             <p className="text-gray-400 text-lg group-hover:text-gray-200 transition-colors duration-300">Analizza il cliente, settore e problema con AI.</p>
           </div>
         </div>
 
-        <div className="group bg-gray-900 border border-gray-800 rounded-2xl p-8 m-3 min-w-[280px] max-w-[360px] shadow-custom-dark hover:shadow-interactive transition-all duration-500 cursor-pointer relative overflow-hidden transform hover:-translate-y-2 hover:scale-102 animate-fade-in animation-delay-200" onClick={() => navigate("trascrizione")}>
+        <div className="group bg-gray-900 border border-gray-800 rounded-2xl p-8 min-w-[280px] max-w-[360px] shadow-custom-dark transition-all duration-500 cursor-pointer relative overflow-hidden transform hover:-translate-y-2 hover:scale-102 animate-fade-in animation-delay-200" onClick={() => navigate("trascrizione")}>
           <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-gray-800 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
           <div className="relative z-10">
-            <div className="text-6xl text-gray-700 mb-6 flex justify-center items-center h-20 group-hover:animate-glow-pulse">🎤</div>
+            <div className="text-6xl text-gray-700 mb-6 flex justify-center items-center h-20">🎤</div>
             <h2 className="text-3xl font-bold text-gray-50 mb-3 group-hover:text-gray-600 transition-colors duration-300">Fase 2</h2>
             <p className="text-gray-400 text-lg group-hover:text-gray-200 transition-colors duration-300">Trascrivi live e ricevi assistenza AI.</p>
           </div>
         </div>
-        <div className="group bg-gray-900 border border-gray-800 rounded-2xl p-8 m-3 min-w-[280px] max-w-[360px] shadow-custom-dark hover:shadow-interactive transition-all duration-500 cursor-pointer relative overflow-hidden transform hover:-translate-y-2 hover:scale-102 animate-fade-in animation-delay-400" onClick={() => navigate("report")}>
+        <div className="group bg-gray-900 border border-gray-800 rounded-2xl p-8 min-w-[280px] max-w-[360px] shadow-custom-dark transition-all duration-500 cursor-pointer relative overflow-hidden transform hover:-translate-y-2 hover:scale-102 animate-fade-in animation-delay-400" onClick={() => navigate("report")}>
           <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-gray-800 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
           <div className="relative z-10">
-            <div className="text-6xl text-gray-700 mb-6 flex justify-center items-center h-20 group-hover:animate-glow-pulse">🧠</div>
+            <div className="text-6xl text-gray-700 mb-6 flex justify-center items-center h-20">🧠</div>
             <h2 className="text-3xl font-bold text-gray-50 mb-3 group-hover:text-gray-600 transition-colors duration-300">Fase 3</h2>
             <p className="text-gray-400 text-lg group-hover:text-gray-200 transition-colors duration-300">Genera report finale e invia in cloud.</p>
           </div>
@@ -57,7 +55,7 @@ function WorkflowSteps() {
 
 function Home() {
   return (
-    <div className="bg-gray-950 min-h-screen">
+    <div className="bg-gray-700 min-h-screen px-4 max-w-7xl mx-auto">
       <h1 className="text-4xl font-bold text-gray-100 text-center pt-10">Seleziona la Fase del Workflow</h1>
       <WorkflowSteps />
     </div>
@@ -67,7 +65,7 @@ function Home() {
 // Fase 1 contenuto (puoi evolverlo con componenti, form, AI etc)
 function Fase1() {
   return (
-    <div className="bg-gray-900 min-h-screen pt-10 pb-20 font-sans antialiased text-gray-100">
+    <div className="bg-gray-700 min-h-screen pt-10 pb-20 font-sans antialiased text-gray-100">
       <div className="max-w-4xl mx-auto mb-8 p-6 md:p-0">
         <h2 className="text-3xl font-bold text-gray-200 mb-6">Ricerca Informazioni</h2>
         <p className="text-gray-300 mb-6 leading-relaxed">
@@ -82,6 +80,7 @@ function Fase1() {
       <div className="max-w-4xl mx-auto p-6 bg-gray-800 rounded-xl shadow-custom-dark">
         <AssistenteVarGroup />
       </div>
+      <ReturnToWorkflowButton />
     </div>
   );
 }
@@ -89,7 +88,7 @@ function Fase1() {
 // Fase 3 contenuto (puoi evolverlo con report, download, integrazioni ecc)
 function Report() {
   return (
-    <div className="bg-gray-900 min-h-screen pt-10 pb-20 font-sans antialiased text-gray-100">
+    <div className="bg-gray-700 min-h-screen pt-10 pb-20 font-sans antialiased text-gray-100">
       <div className="max-w-4xl mx-auto mb-8 p-6 md:p-0">
         <h2 className="text-3xl font-bold text-gray-200 mb-6">Genera Report Finale</h2>
         <p className="text-gray-300 mb-6 leading-relaxed">
@@ -103,6 +102,7 @@ function Report() {
       <div className="max-w-4xl mx-auto p-6 bg-gray-800 rounded-xl shadow-custom-dark">
         <RispostaWebhook />
       </div>
+      <ReturnToWorkflowButton />
     </div>
   );
 }
