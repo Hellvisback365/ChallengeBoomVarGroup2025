@@ -6,6 +6,8 @@ import ReportFinale from "./ReportFinale.jsx";
 import AssistenteVarGroup from "./AssistenteVarGroup.jsx";
 import ReturnToWorkflowButton from "./ReturnToWorkflowButton.jsx";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
+
 
 
 function WorkflowSteps() {
@@ -237,6 +239,7 @@ export default function App() {
       <Route path="*" element={<Home />} />
     </Routes>
     <Analytics />
+    <SpeedInsights />
     </>
   );
 }
