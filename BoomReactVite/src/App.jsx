@@ -195,17 +195,6 @@ function Home() {
 function Fase1() {
   return (
     <div className="bg-gray-700 min-h-screen pt-10 pb-20 font-sans antialiased text-gray-100">
-      <div className="max-w-4xl mx-auto mb-8 p-6 md:p-0">
-        <h2 className="text-3xl font-bold text-gray-200 mb-6">Ricerca Informazioni</h2>
-        <p className="text-gray-300 mb-6 leading-relaxed">
-          <b className="font-semibold text-gray-50">Step attivo:</b> Raccogli e analizza tutte le informazioni sull'azienda, settore con AI.<br />
-          Usa i tool dedicati n8n per la ricerca e compila il report con i dati fondamentali su cliente, competitors, economia.
-        </p>
-        <ul className="list-disc list-inside text-gray-200 mb-8 space-y-2">
-          <li><b className="text-gray-50">Input:</b> Nome azienda, settore, problema</li>
-          <li><b className="text-gray-50">Output:</b> Panoramica, lista competitors, analisi economica</li>
-        </ul>
-      </div>
       <div className="max-w-4xl mx-auto p-6 bg-gray-800 rounded-xl shadow-custom-dark">
         <AssistenteVarGroup />
       </div>
@@ -218,16 +207,6 @@ function Fase1() {
 function Report() {
   return (
     <div className="bg-gray-700 min-h-screen pt-10 pb-20 font-sans antialiased text-gray-100">
-      <div className="max-w-4xl mx-auto mb-8 p-6 md:p-0">
-        <h2 className="text-3xl font-bold text-gray-200 mb-6">Genera Report Finale</h2>
-        <p className="text-gray-300 mb-6 leading-relaxed">
-          <b className="font-semibold text-gray-50">Step attivo:</b> Elabora e sintetizza i dati raccolti nelle fasi precedenti.
-        </p>
-        <ul className="list-disc list-inside text-gray-200 mb-8 space-y-2">
-          <li><b className="text-gray-50">Output:</b> Report PDF/Word pronto per invio</li>
-          <li><b className="text-gray-50">Storage:</b> Salvataggio automatico su Google Drive e invio Email</li>
-        </ul>
-      </div>
       <div className="max-w-4xl mx-auto p-6 bg-gray-800 rounded-xl shadow-custom-dark">
         <ReportFinale />
       </div>
