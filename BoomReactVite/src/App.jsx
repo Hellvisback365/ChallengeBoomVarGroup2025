@@ -45,20 +45,20 @@ function WorkflowSteps() {
 
   const helpContent = [
     {
-      title: "Benvenuto nella Workflow AI Suite!",
+      title: "Benvenuto! Io sono Zenith.",
       description: "Questa guida ti accompagnerà attraverso le funzionalità principali della nostra piattaforma di consulenza ottimizzata con l'Intelligenza Artificiale. Usa i pulsanti 'Avanti' e 'Indietro' per navigare tra le sezioni.",
     },
     {
-      title: "Fase 1: Analisi Cliente e Settore con AI",
+      title: "Fase 1: Analisi Cliente e Settore con Zenith-Research",
       description: "<strong>Obiettivo:</strong> Ottenere un'analisi preliminare approfondita del cliente e del suo mercato.<br/><br/><strong>Come Funziona:</strong> Interagisci con l'Assistente VarGroup. Fornisci il nome dell'azienda, il settore e il problema. L'AI raccoglierà informazioni economiche, identificherà i competitor e cercherà consulenti VarGroup esperti o con precedenti esperienze con il cliente.<br/><br/><strong>Risultato:</strong> Un report strutturato che funge da base per la consulenza.",
     },
     {
-      title: "Fase 2: Trascrizione Live e Assistenza AI",
-      description: "<strong>Obiettivo:</strong> Ricevere suggerimenti in tempo reale durante un meeting con il cliente.<br/><br/><strong>Come Funziona:</strong> Attiva il microfono. L'AI trascriverà la conversazione e ti fornirà istantaneamente domande da porre al cliente, idee per grafici esplicativi e spunti progettuali, basandosi sul contesto del dialogo.<br/><br/><strong>Risultato:</strong> Supporto dinamico per condurre meeting più efficaci.",
+      title: "Fase 2: Trascrizione Live e Assistenza Meeting con Zenith-Transcript",
+      description: "<strong>Obiettivo:</strong> Ricevere suggerimenti in tempo reale durante un meeting con il cliente.<br/><br/><strong>Come Funziona:</strong> Attiva il microfono. Zenith-Transcript trascriverà la conversazione e ti fornirà istantaneamente domande da porre al cliente, idee per grafici esplicativi e spunti progettuali, basandosi sul contesto del dialogo.<br/><br/><strong>Risultato:</strong> Supporto dinamico per condurre meeting più efficaci.",
     },
     {
-      title: "Fase 3: Generazione Report Finale e Invio in Cloud",
-      description: "<strong>Obiettivo:</strong> Creare e archiviare il report finale della consulenza.<br/><br/><strong>Come Funziona:</strong> Inserisci i dettagli del consulente, dell'azienda e la data. Il sistema compilerà un report finale unendo i dati della Fase 1 e, se disponibile, la trascrizione della Fase 2. Il report sarà convertito in PDF e salvato automaticamente su Google Drive, con invio via email.<br/><br/><strong>Risultato:</strong> Documentazione completa e organizzata della consulenza, facilmente condivisibile.",
+      title: "Fase 3: Generazione Report Finale con Zenith-Report",
+      description: "<strong>Obiettivo:</strong> Creare e archiviare il report finale della consulenza.<br/><br/><strong>Come Funziona:</strong> Inserisci i dettagli del consulente, dell'azienda e la data. Il sistema compilerà un report finale unendo i dati della Fase 1 e, se disponibile, la trascrizione della Fase 2. Il report sarà convertito in PDF e salvato automaticamente su Google Drive.<br/><br/><strong>Risultato:</strong> Documentazione completa e organizzata della consulenza, facilmente condivisibile.",
     },
   ];
 
@@ -86,10 +86,16 @@ function WorkflowSteps() {
   return (
     <div className="bg-gray-700 min-h-screen flex flex-col items-center pt-16 font-sans antialiased text-gray-100 relative overflow-hidden">
       
-      {/* Titolo con effetto */}
-      <h1 className="text-4xl md:text-6xl font-extrabold text-gray-50 text-center mb-16 drop-shadow-lg animate-slide-in-top">
-        Workflow AI <span className="text-blue-400">Suite</span>
-      </h1>
+      {/* Hero di benvenuto */}
+      <div className="text-center mb-12 animate-slide-in-top">
+        <h1 className="text-2xl md:text-3xl font-semibold text-gray-300">Benvenuto!</h1>
+        <h2 className="mt-2 text-4xl md:text-6xl font-bold text-gray-200 leading-tight">
+          Io sono
+          {" "}
+          <span className="text-blue-400">ZENITH</span>
+        </h2>
+        <p className="text-gray-300 text-base md:text-lg mt-3">Sono qui per assisterti nelle tue consulenze. Scegli la Fase che desideri.</p>
+      </div>
       <div className="relative w-full max-w-6xl">
         <div ref={scrollContainerRef} className="flex gap-8 mt-5 px-4 flex-nowrap overflow-x-auto snap-x snap-mandatory max-w-full">
           <div className="group bg-gray-800 border border-gray-800 rounded-2xl p-8 min-w-[280px] max-w-[360px] shadow-custom-dark transition-all duration-500 cursor-pointer relative overflow-hidden transform hover:-translate-y-2 hover:scale-102 animate-fade-in snap-center" onClick={() => navigate("fase1")}>
@@ -97,7 +103,7 @@ function WorkflowSteps() {
             <div className="relative z-10">
               <div className="text-6xl text-gray-700 mb-6 flex justify-center items-center h-20">🔍</div>
               <h2 className="text-3xl font-bold text-white mb-3 group-hover:text-gray-600 transition-colors duration-300">Fase 1</h2>
-              <p className="text-white text-lg group-hover:text-gray-200 transition-colors duration-300">Analizza il cliente, settore e problema con AI.</p>
+              <p className="text-white text-lg group-hover:text-gray-200 transition-colors duration-300">Analizza l'azienda che ha richiesto la tua consulenza con Zenith-Research.</p>
             </div>
           </div>
           <div className="group bg-gray-800 border border-gray-800 rounded-2xl p-8 min-w-[280px] max-w-[360px] shadow-custom-dark transition-all duration-500 cursor-pointer relative overflow-hidden transform hover:-translate-y-2 hover:scale-102 animate-fade-in animation-delay-200 snap-center" onClick={() => navigate("trascrizione")}>
@@ -105,7 +111,7 @@ function WorkflowSteps() {
             <div className="relative z-10">
               <div className="text-6xl text-gray-700 mb-6 flex justify-center items-center h-20">🎤</div>
               <h2 className="text-3xl font-bold text-white mb-3 group-hover:text-gray-600 transition-colors duration-300">Fase 2</h2>
-              <p className="text-white text-lg group-hover:text-gray-200 transition-colors duration-300">Trascrivi live e ricevi assistenza AI.</p>
+              <p className="text-white text-lg group-hover:text-gray-200 transition-colors duration-300">Trascrivi la conversazione con l'azienda cliente e ottieni suggerimenti in tempo reale con Zenith-Transcript.</p>
             </div>
           </div>
           <div className="group bg-gray-800 border border-gray-800 rounded-2xl p-8 min-w-[280px] max-w-[360px] shadow-custom-dark transition-all duration-500 cursor-pointer relative overflow-hidden transform hover:-translate-y-2 hover:scale-102 animate-fade-in animation-delay-400 snap-center" onClick={() => navigate("report")}>
@@ -113,7 +119,7 @@ function WorkflowSteps() {
             <div className="relative z-10">
               <div className="text-6xl text-gray-700 mb-6 flex justify-center items-center h-20">🧠</div>
               <h2 className="text-3xl font-bold text-white mb-3 group-hover:text-gray-600 transition-colors duration-300">Fase 3</h2>
-              <p className="text-white text-lg group-hover:text-gray-200 transition-colors duration-300">Genera report finale e invia in cloud.</p>
+              <p className="text-white text-lg group-hover:text-gray-200 transition-colors duration-300">Genera un report conclusivo con precisione ed efficienza tramite Zenith-Report.</p>
             </div>
           </div>
         </div>
@@ -185,7 +191,6 @@ function WorkflowSteps() {
 function Home() {
   return (
     <div className="bg-gray-700 min-h-screen px-4 max-w-7xl mx-auto">
-      <h1 className="text-4xl font-bold text-gray-100 text-center pt-10">Seleziona la Fase del Workflow</h1>
       <WorkflowSteps />
     </div>
   );
@@ -195,9 +200,7 @@ function Home() {
 function Fase1() {
   return (
     <div className="bg-gray-700 min-h-screen pt-10 pb-20 font-sans antialiased text-gray-100">
-      <div className="max-w-4xl mx-auto p-6 bg-gray-800 rounded-xl shadow-custom-dark">
-        <AssistenteVarGroup />
-      </div>
+      <AssistenteVarGroup />
       <ReturnToWorkflowButton />
     </div>
   );
@@ -207,9 +210,7 @@ function Fase1() {
 function Report() {
   return (
     <div className="bg-gray-700 min-h-screen pt-10 pb-20 font-sans antialiased text-gray-100">
-      <div className="max-w-4xl mx-auto p-6 bg-gray-800 rounded-xl shadow-custom-dark">
-        <ReportFinale />
-      </div>
+      <ReportFinale />
       <ReturnToWorkflowButton />
     </div>
   );

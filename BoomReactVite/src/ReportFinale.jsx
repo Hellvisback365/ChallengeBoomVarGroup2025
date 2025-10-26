@@ -74,9 +74,10 @@ export default function ReportFinale() {
   return (
     <div className="w-full font-sans antialiased text-gray-100">
       
-      <div className="w-full max-w-xl mx-auto p-6 bg-gray-800 rounded-xl shadow-custom-dark border border-gray-700 animate-slide-in-top">
-        <div className="text-3xl font-bold text-white mb-6 text-center">Genera Report Finale</div>
-        <p className="text-gray-300 mb-6 text-center text-lg italic animate-fade-in">Crea e archivia report finali in modo automatico e sicuro.</p>
+      <div className="w-full max-w-4xl mx-auto p-6 bg-gray-800 rounded-xl shadow-custom-dark border border-gray-700 animate-slide-in-top">
+        <div className="text-3xl font-bold text-white mb-1 text-center">Genera Report Finale</div>
+        <div className="text-md text-gray-400 mb-5 text-center">con Zenith-Report</div>
+        <p className="text-gray-300 mb-6 text-center text-lg italic animate-fade-in">Dimmi a quale consulenza ti riferisci e ti genererò un report conclusivo.</p>
         <button
           className="w-full bg-gray-700 text-white px-6 py-3 rounded-xl font-semibold hover:bg-gray-600 transition-colors duration-300 mb-6 shadow-interactive animate-glow-pulse"
           onClick={() => setShowModal(true)}

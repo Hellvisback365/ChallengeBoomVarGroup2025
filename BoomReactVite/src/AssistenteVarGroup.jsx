@@ -125,6 +125,8 @@ export default function AssistenteVarGroup() {
     setLoading(true);
     const nuovoMessaggio = { ruolo: "utente", testo: input };
     setChat(prev => [...prev, nuovoMessaggio]);
+    // Svuota subito il campo input appena invii
+    setInput("");
     try {
       const res = await fetch(VARGROUP_URL, {
         method: "POST",
@@ -140,7 +142,6 @@ export default function AssistenteVarGroup() {
       const risposta = data.output || data.text || "Nessuna risposta"; // ← L'AI Agent restituisce { output: "..." }
       
       setChat(prev => [...prev, { ruolo: "AI", testo: risposta }]);
-      setInput("");
     } catch (err) {
       console.error("Errore:", err); // ← Aggiungi log per debug
       setChat(prev => [...prev, { ruolo: "AI", testo: "Errore nell'assistente." }]);
@@ -205,14 +206,15 @@ export default function AssistenteVarGroup() {
 
   return (
     <div className="w-full font-sans antialiased text-gray-100">
-      <div className="w-full max-w-xl mx-auto p-6 bg-gray-800 rounded-2xl shadow-custom-dark border border-gray-700 animate-slide-in-top">
-        <div className="text-3xl font-bold text-white mb-6 text-center">Assistente VarGroup</div>
-        <p className="text-gray-300 mb-6 text-center text-lg italic animate-fade-in">Il tuo consulente AI per l'analisi cliente e settore.</p>
+      <div className="w-full max-w-4xl mx-auto p-6 bg-gray-800 rounded-2xl shadow-custom-dark border border-gray-700 animate-slide-in-top">
+        <div className="text-3xl font-bold text-white mb-1 text-center">Ricerca e analisi aziendale</div>
+        <div className="text-sm text-gray-400 mb-5 text-center">con Zenith-Research</div>
+        <p className="text-gray-300 mb-6 text-center text-lg italic animate-fade-in">Dammi le informazioni sull'azienda e sulla consulenza e scriverò un report dettagliato.</p>
         <div ref={chatRef}
           className="bg-gray-700 h-96 overflow-y-auto rounded-xl p-4 mb-6 text-gray-100 border border-gray-600 shadow-inner"
         >
           {chat.length === 0 && (
-            <div className="text-gray-300 italic">Ciao! Sono l'assistente VarGroup. Come posso aiutarti?</div>
+            <div className="text-gray-300 italic">Ciao! Sono <span className="font-semibold text-gray-100">Zenith-Research</span>. Come posso aiutarti?</div>
           )}
           {chat.map((m, i) => (
             <div key={i} className={`mb-3 ${m.ruolo === "utente" ? "text-right" : "text-left"} animate-fade-in`}>

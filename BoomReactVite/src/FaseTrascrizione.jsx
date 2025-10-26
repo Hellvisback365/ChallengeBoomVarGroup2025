@@ -9,7 +9,7 @@ export default function FaseTrascrizione() {
   const [micOn, setMicOn] = useState(false);
   const [chat, setChat] = useState(() => localStorage.getItem("conversazione") || "");
   const [suggestions, setSuggestions] = useState([]);
-  const [msg, setMsg] = useState("Premi il microfono e parla. Ti consiglierò live!");
+  const [msg, setMsg] = useState("Premi il microfono e parla, ascolterò la tua conversazione.");
   
   const recogRef = useRef(null);
   const aiRef = useRef();
@@ -239,9 +239,10 @@ export default function FaseTrascrizione() {
   return (
     <div className="min-h-screen bg-gray-700 text-gray-100 font-sans antialiased flex items-center justify-center overflow-auto px-2 md:px-0">
       <div className="w-full max-w-3xl mx-auto p-6 bg-gray-800 rounded-xl shadow-custom-dark border border-gray-700 animate-slide-in-top">
-        {/* Title Bar */}
-        <div className="text-3xl font-bold text-white mb-6 text-center">Fase 2</div>
-        <p className="text-gray-300 mb-6 text-center text-lg italic animate-fade-in">Acquisisci e analizza conversazioni in tempo reale con il supporto AI.</p>
+  {/* Title Bar */}
+          <div className="text-2xl font-bold text-white mb-1 text-center">TRASCRIZIONE E SUGGERIMENTI IRT</div>
+          <div className="text-sm text-gray-400 mb-5 text-center">con Zenith-Transcript</div>
+  <p className="text-gray-300 mb-6 text-center text-lg italic animate-fade-in">Ascolterò la conversazione e ti suggerirò come continuarla.</p>
         {/* Microphone/Actions Row */}
         <div className="w-full flex flex-col gap-4 mb-6">
           <div className="flex items-center gap-4 justify-center">
@@ -267,7 +268,7 @@ export default function FaseTrascrizione() {
         {/* Cards: Chat & Suggestions in flex-row */}
         <div className="flex flex-col md:flex-row gap-6 mb-6 animate-fade-in">
           <div className="flex-1 bg-gray-800 border border-gray-700 rounded-2xl shadow-inner min-h-[350px] max-h-[420px] p-5">
-            <div className="text-2xl font-bold text-white mb-3">Chat</div>
+            <div className="text-2xl font-bold text-white mb-3">Conversazione trascritta</div>
             <div className="min-h-[140px] max-h-[340px] overflow-y-auto flex flex-col gap-2 p-2 bg-gray-800 rounded-lg shadow-inner border border-gray-700">
               {chat
                 ? chat.split("\n").map((c, i) => c.trim() && <div className="self-end bg-gray-700 text-white rounded-xl px-4 py-2 text-base max-w-[85%] shadow-md animate-slide-in-top" key={i}>{c}</div>)
@@ -275,7 +276,7 @@ export default function FaseTrascrizione() {
             </div>
           </div>
           <div className="flex-1 bg-gray-800 border border-gray-700 rounded-2xl shadow-inner min-h-[350px] max-h-[420px] p-5">
-            <div className="text-2xl font-bold text-white mb-3">Suggerimenti AI</div>
+            <div className="text-2xl font-bold text-white mb-3">Suggerimenti</div>
             <div className="min-h-[140px] max-h-[340px] overflow-y-auto flex flex-col gap-2 p-2 bg-gray-800 rounded-lg shadow-inner border border-gray-700" ref={aiRef}>
               {suggestions.length > 0
                 ? suggestions.map((s, i) => <div className="self-start bg-gray-700 text-white rounded-xl px-4 py-2 text-base max-w-[85%] shadow-md animate-slide-in-top" key={i}>{s}</div>)
@@ -310,6 +311,15 @@ export default function FaseTrascrizione() {
                     <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
                   </svg>
                 </button>
+              </div>
+              {/* Warning message */}
+              <div className="mb-5 p-3 bg-yellow-900 bg-opacity-30 border border-yellow-600 rounded-lg">
+                <p className="text-yellow-400 text-sm font-medium flex items-start gap-2">
+                  <svg className="h-5 w-5 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                  </svg>
+                  <span>Ricorda di caricare la trascrizione SOLO a conversazione finita!</span>
+                </p>
               </div>
               <div className="space-y-5">
                 <div>
