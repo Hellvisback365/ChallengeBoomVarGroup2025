@@ -60,8 +60,8 @@ function WorkflowSteps() {
       <h1 className="text-4xl md:text-6xl font-extrabold text-gray-50 text-center mb-16 drop-shadow-lg animate-slide-in-top">
         Workflow AI <span className="text-blue-400">Suite</span>
       </h1>
-      <div className="flex justify-center gap-8 mt-5 w-full max-w-6xl px-4 flex-nowrap overflow-x-auto">
-        <div className="group bg-gray-800 border border-gray-800 rounded-2xl p-8 min-w-[280px] max-w-[360px] shadow-custom-dark transition-all duration-500 cursor-pointer relative overflow-hidden transform hover:-translate-y-2 hover:scale-102 animate-fade-in" onClick={() => navigate("fase1")}>
+      <div className="flex justify-center gap-8 mt-5 px-4 flex-nowrap overflow-x-auto">
+        <div className="group bg-gray-800 border border-gray-800 rounded-2xl p-8 min-w-[280px] max-w-[360px] min-w-0 shadow-custom-dark transition-all duration-500 cursor-pointer relative overflow-hidden transform hover:-translate-y-2 hover:scale-102 animate-fade-in" onClick={() => navigate("fase1")}>
           <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-gray-800 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
           <div className="relative z-10">
             <div className="text-6xl text-gray-700 mb-6 flex justify-center items-center h-20">🔍</div>
@@ -70,7 +70,7 @@ function WorkflowSteps() {
           </div>
         </div>
 
-        <div className="group bg-gray-800 border border-gray-800 rounded-2xl p-8 min-w-[280px] max-w-[360px] shadow-custom-dark transition-all duration-500 cursor-pointer relative overflow-hidden transform hover:-translate-y-2 hover:scale-102 animate-fade-in animation-delay-200" onClick={() => navigate("trascrizione")}>
+        <div className="group bg-gray-800 border border-gray-800 rounded-2xl p-8 min-w-[280px] max-w-[360px] min-w-0 shadow-custom-dark transition-all duration-500 cursor-pointer relative overflow-hidden transform hover:-translate-y-2 hover:scale-102 animate-fade-in animation-delay-200" onClick={() => navigate("trascrizione")}>
           <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-gray-800 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
           <div className="relative z-10">
             <div className="text-6xl text-gray-700 mb-6 flex justify-center items-center h-20">🎤</div>
@@ -78,7 +78,7 @@ function WorkflowSteps() {
             <p className="text-white text-lg group-hover:text-gray-200 transition-colors duration-300">Trascrivi live e ricevi assistenza AI.</p>
           </div>
         </div>
-        <div className="group bg-gray-800 border border-gray-800 rounded-2xl p-8 min-w-[280px] max-w-[360px] shadow-custom-dark transition-all duration-500 cursor-pointer relative overflow-hidden transform hover:-translate-y-2 hover:scale-102 animate-fade-in animation-delay-400" onClick={() => navigate("report")}>
+        <div className="group bg-gray-800 border border-gray-800 rounded-2xl p-8 min-w-[280px] max-w-[360px] min-w-0 shadow-custom-dark transition-all duration-500 cursor-pointer relative overflow-hidden transform hover:-translate-y-2 hover:scale-102 animate-fade-in animation-delay-400" onClick={() => navigate("report")}>
           <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-gray-800 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
           <div className="relative z-10">
             <div className="text-6xl text-gray-700 mb-6 flex justify-center items-center h-20">🧠</div>
