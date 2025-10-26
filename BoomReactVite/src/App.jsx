@@ -9,13 +9,56 @@ import ReturnToWorkflowButton from "./ReturnToWorkflowButton.jsx";
 
 function WorkflowSteps() {
   const [showWelcome, setShowWelcome] = useState(true);
+  const [showHelpModal, setShowHelpModal] = useState(false); // State per la visibilità della modale di aiuto
+  const [helpStep, setHelpStep] = useState(0); // Nuovo stato per il passo della guida
   const navigate = useNavigate();
+
+  const helpContent = [
+    {
+      title: "Benvenuto nella Workflow AI Suite!",
+      description: "Questa guida ti accompagnerà attraverso le funzionalità principali della nostra piattaforma di consulenza ottimizzata con l'Intelligenza Artificiale. Usa i pulsanti 'Avanti' e 'Indietro' per navigare tra le sezioni.",
+    },
+    {
+      title: "Fase 1: Analisi Cliente e Settore con AI",
+      description: "<strong>Obiettivo:</strong> Ottenere un'analisi preliminare approfondita del cliente e del suo mercato.<br/><br/><strong>Come Funziona:</strong> Interagisci con l'Assistente VarGroup. Fornisci il nome dell'azienda, il settore e il problema. L'AI raccoglierà informazioni economiche, identificherà i competitor e cercherà consulenti VarGroup esperti o con precedenti esperienze con il cliente.<br/><br/><strong>Risultato:</strong> Un report strutturato che funge da base per la consulenza.",
+    },
+    {
+      title: "Fase 2: Trascrizione Live e Assistenza AI",
+      description: "<strong>Obiettivo:</strong> Ricevere suggerimenti in tempo reale durante un meeting con il cliente.<br/><br/><strong>Come Funziona:</strong> Attiva il microfono. L'AI trascriverà la conversazione e ti fornirà istantaneamente domande da porre al cliente, idee per grafici esplicativi e spunti progettuali, basandosi sul contesto del dialogo.<br/><br/><strong>Risultato:</strong> Supporto dinamico per condurre meeting più efficaci.",
+    },
+    {
+      title: "Fase 3: Generazione Report Finale e Invio in Cloud",
+      description: "<strong>Obiettivo:</strong> Creare e archiviare il report finale della consulenza.<br/><br/><strong>Come Funziona:</strong> Inserisci i dettagli del consulente, dell'azienda e la data. Il sistema compilerà un report finale unendo i dati della Fase 1 e, se disponibile, la trascrizione della Fase 2. Il report sarà convertito in PDF e salvato automaticamente su Google Drive, con invio via email.<br/><br/><strong>Risultato:</strong> Documentazione completa e organizzata della consulenza, facilmente condivisibile.",
+    },
+  ];
+
+  const currentHelpStepContent = helpContent[helpStep];
+  const totalHelpSteps = helpContent.length;
+
+  const handleOpenHelpModal = () => {
+    setShowHelpModal(true);
+    setHelpStep(0); // Inizia sempre dal primo step
+  };
+
+  const handleNextHelpStep = () => {
+    setHelpStep((prevStep) => Math.min(prevStep + 1, totalHelpSteps - 1));
+  };
+
+  const handlePreviousHelpStep = () => {
+    setHelpStep((prevStep) => Math.max(prevStep - 1, 0));
+  };
+
+  const handleCloseHelpModal = () => {
+    setShowHelpModal(false);
+    setHelpStep(0); // Resetta lo step quando si chiude
+  };
+
   return (
     <div className="bg-gray-700 min-h-screen flex flex-col items-center pt-16 font-sans antialiased text-gray-100 relative overflow-hidden">
       
       {/* Titolo con effetto */}
       <h1 className="text-4xl md:text-6xl font-extrabold text-gray-50 text-center mb-16 drop-shadow-lg animate-slide-in-top">
-        Workflow AI <span className="text-gray-700">Suite</span>
+        Workflow AI <span className="text-blue-400">Suite</span>
       </h1>
       <div className="flex justify-center gap-8 mt-5 w-full max-w-6xl px-4 flex-nowrap overflow-x-auto">
         <div className="group bg-gray-900 border border-gray-800 rounded-2xl p-8 min-w-[280px] max-w-[360px] shadow-custom-dark transition-all duration-500 cursor-pointer relative overflow-hidden transform hover:-translate-y-2 hover:scale-102 animate-fade-in" onClick={() => navigate("fase1")}>
@@ -45,9 +88,45 @@ function WorkflowSteps() {
         </div>
       </div>
       {/* Pulsante aiuto */}
-      <button className="fixed bottom-8 left-8 bg-gray-800 text-white text-2xl font-bold rounded-full p-5 shadow-lg hover:bg-gray-700 transition-all duration-300 z-20 animate-glow-pulse" onClick={() => alert("Hai bisogno di assistenza?")}>
+      <button className="fixed bottom-8 left-8 bg-gray-800 text-white text-2xl font-bold rounded-full p-5 shadow-lg hover:bg-gray-700 transition-all duration-300 z-20 animate-glow-pulse" onClick={handleOpenHelpModal}>
         <span role="img" aria-label="Aiuto">❓</span>
       </button>
+
+      {/* Modale di aiuto */}
+      {showHelpModal && (
+        <div className="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50 animate-fade-in">
+          <div className="bg-gray-800 border border-gray-700 rounded-lg p-8 m-4 max-w-lg w-full shadow-custom-dark relative transform scale-95 animate-slide-in-top-modal">
+            <h3 className="text-3xl font-bold text-gray-50 mb-6 text-center">{currentHelpStepContent.title}</h3>
+            <p className="text-gray-300 mb-4 leading-relaxed" dangerouslySetInnerHTML={{ __html: currentHelpStepContent.description.replace(/\n/g, '<br/>') }}></p>
+
+            <button
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-50 transition-colors duration-200"
+              onClick={handleCloseHelpModal}
+              aria-label="Chiudi assistenza"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            <div className="flex justify-between mt-6">
+              <button
+                className={`bg-gray-700 text-gray-50 font-semibold py-3 px-6 rounded-lg transition-all duration-300 shadow-lg ${helpStep === 0 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-600'}`}
+                onClick={handlePreviousHelpStep}
+                disabled={helpStep === 0}
+              >
+                Indietro
+              </button>
+              <button
+                className="bg-gray-700 text-gray-50 font-semibold py-3 px-6 rounded-lg hover:bg-gray-600 transition-all duration-300 shadow-lg"
+                onClick={helpStep === totalHelpSteps - 1 ? handleCloseHelpModal : handleNextHelpStep}
+              >
+                {helpStep === totalHelpSteps - 1 ? "Ho Capito" : "Avanti"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
