@@ -207,7 +207,7 @@ function Home() {
   );
 }
 
-// Fase 1 contenuto (puoi evolverlo con componenti, form, AI etc)
+// Fase 1 contenuto 
 function Fase1() {
   return (
     <div className="bg-gray-700 min-h-screen pt-10 pb-20 font-sans antialiased text-gray-100">
@@ -217,7 +217,7 @@ function Fase1() {
   );
 }
 
-// Fase 3 contenuto (puoi evolverlo con report, download, integrazioni ecc)
+// Fase 3 contenuto 
 function Report() {
   return (
     <div className="bg-gray-700 min-h-screen pt-10 pb-20 font-sans antialiased text-gray-100">
