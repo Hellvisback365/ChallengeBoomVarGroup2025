@@ -9,11 +9,11 @@ function generateSessionId() {
   return `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 }
 
-// Formatta il testo del chatbot in struttura report
+// Formatta il testo markdown in HTML per la visualizzazione
 function formatReportText(text) {
   if (!text) return text;
   
-  // Converti markdown-like formatting in HTML strutturato
+  // Converti markdown in HTML strutturato
   let formatted = text
     // Header H1 (# Titolo)
     .replace(/^# (.+)$/gm, '<h1 class="text-2xl font-bold mt-3 mb-1 text-gray-500">$1</h1>')
@@ -21,33 +21,55 @@ function formatReportText(text) {
     .replace(/^## (.+)$/gm, '<h2 class="text-xl font-bold mt-2.5 mb-0.5 text-gray-400">$1</h2>')
     // Header H3 (### Sezione)
     .replace(/^### (.+)$/gm, '<h3 class="text-lg font-bold mt-2 mb-0.5 text-gray-100">$1</h3>')
-    // Header H4 (#### Sottoparagrafo) - più piccolo e indentato
+    // Header H4 (#### Sottoparagrafo)
     .replace(/^#### (.+)$/gm, '<h4 class="text-base font-semibold mt-1 mb-0.5 ml-4 text-gray-200">$1</h4>')
     // Grassetto (**testo**)
     .replace(/\*\*(.+?)\*\*/g, '<strong class="font-bold text-gray-50">$1</strong>')
     // Corsivo (*testo*)
-    .replace(/\*(.+?)\*/g, '<em class="italic">$1</em>')
-    // Liste puntate (- item o * item)
-    .replace(/^[*-] (.+)$/gm, '<li class="ml-6 mb-1 text-gray-200">$1</li>')
-    // Paragrafi (righe vuote)
-    .replace(/\n\n/g, '<br/><br/>');
+    .replace(/\*([^*]+?)\*/g, '<em class="italic">$1</em>')
+    // Liste puntate (- item)
+    .replace(/^- (.+)$/gm, '<li class="ml-6 mb-1 text-gray-200">$1</li>')
+    // Paragrafi (doppia newline -> doppio <br>)
+    .replace(/\n\n/g, '<br/><br/>')
+    // Singola newline -> singolo <br>
+    .replace(/\n/g, '<br/>');
   
   return formatted;
 }
 
-// Converte il testo in una struttura Markdown coerente con le regole definite
-// - Rimuove eventuali tag HTML
-// - Converte elenchi numerati (1. 2. ...) in elenchi puntati (- )
-// - Normalizza le nuove righe
+// Converte il testo in markdown standard (rimuove HTML se presente e normalizza)
+// Mantiene tutte le formattazioni: headers, grassetto, corsivo, liste, a capo
 function toMarkdownStructure(text) {
   if (!text) return text;
+  
   let md = text
-    // rimuovi HTML eventualmente presente
+    // Converti headers HTML in markdown (se presenti)
+    .replace(/<h1[^>]*>(.*?)<\/h1>/gi, '# $1')
+    .replace(/<h2[^>]*>(.*?)<\/h2>/gi, '## $1')
+    .replace(/<h3[^>]*>(.*?)<\/h3>/gi, '### $1')
+    .replace(/<h4[^>]*>(.*?)<\/h4>/gi, '#### $1')
+    // Converti grassetto
+    .replace(/<strong[^>]*>(.*?)<\/strong>/gi, '**$1**')
+    .replace(/<b[^>]*>(.*?)<\/b>/gi, '**$1**')
+    // Converti corsivo
+    .replace(/<em[^>]*>(.*?)<\/em>/gi, '*$1*')
+    .replace(/<i[^>]*>(.*?)<\/i>/gi, '*$1*')
+    // Converti liste
+    .replace(/<li[^>]*>(.*?)<\/li>/gi, '- $1')
+    // Rimuovi tag <br> multipli e converti in doppia newline (paragrafo)
+    .replace(/<br\s*\/?>\s*<br\s*\/?>/gi, '\n\n')
+    // Rimuovi singoli <br> e converti in newline
+    .replace(/<br\s*\/?>/gi, '\n')
+    // Rimuovi altri tag HTML rimanenti
     .replace(/<\/?[^>]+(>|$)/g, '')
-    // converti elenchi numerati in elenchi puntati
+    // Converti elenchi numerati in elenchi puntati
     .replace(/^\s*\d+\.\s+/gm, '- ')
-    // normalizza CRLF -> LF
-    .replace(/\r\n/g, '\n');
+    // Normalizza CRLF -> LF
+    .replace(/\r\n/g, '\n')
+    // Rimuovi spazi multipli (ma non a inizio riga per indentazione)
+    .replace(/[^\S\r\n]{2,}/g, ' ')
+    // Pulisci newline multiple eccessive (max 2)
+    .replace(/\n{3,}/g, '\n\n');
 
   return md.trim();
 }
